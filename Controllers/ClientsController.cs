@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using lab.Contracts;
+using lab.Data;
 using lab.Exceptions;
 using lab.Middleware;
 using lab.Models.Client;
@@ -47,5 +48,50 @@ public class ClientsController : ControllerBase
 
         var clientDto = _mapper.Map<ClientDto>(client);
         return Ok(clientDto);
+    }
+
+    [HttpPut("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ErrorDetails), StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<ClientDto>> UpdateClient(int id, UpdateClientDto updateClient)
+    {
+        var client = await _clientsRepo.GetAsync(id);
+        if(client == null)
+        {
+            throw new NotFoundException(nameof(UpdateClient), id);
+        }
+        _mapper.Map(updateClient, client);
+
+        await _clientsRepo.UpdateAsync(client);
+
+        var clientDto = _mapper.Map<ClientDto>(client);
+        return Ok(clientDto);
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<ClientDto>> PostClient(ClientDto createClient)
+    {
+        var client = _mapper.Map<DovidnykClientiv>(createClient);
+        
+        await _clientsRepo.AddAsync(client);
+
+
+        var clientDto = _mapper.Map<ClientDto>(client);
+        return CreatedAtAction(nameof(PostClient), new {Kodkl = client.Kodkl}, clientDto);
+    }
+
+    [HttpDelete("{id}")]
+    [ProducesResponseType(typeof(ErrorDetails), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> DeleteClient(int id)
+    {
+        var client = await _clientsRepo.GetAsync(id);
+        if(client == null)
+        {
+            throw new NotFoundException(nameof(DeleteClient), id);
+        }
+
+        await _clientsRepo.DeleteAsync(id);
+
+        return NoContent();
     }
 }

@@ -6,11 +6,8 @@ using System.Threading.Tasks;
 
 namespace lab.Models.Client
 {
-    public class ClientDto
+    public class UpdateClientDto
     {
-        [Required]
-        [Range(0, int.MaxValue)]
-        public int Kodkl { get; set; }
         [Required]
         public string Namekl { get; set; }
     }

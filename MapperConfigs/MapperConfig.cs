@@ -13,6 +13,7 @@ namespace lab.MapperConfigs
         public MapperConfig()
         {
             CreateMap<DovidnykClientiv, ClientDto>().ReverseMap();
+            CreateMap<DovidnykClientiv, UpdateClientDto>().ReverseMap();
         }
     }
 }
