@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using lab.Data;
 using lab.Models.Client;
+using lab.Models.DeliveryType;
 
 namespace lab.MapperConfigs
 {
@@ -12,8 +13,15 @@ namespace lab.MapperConfigs
     {
         public MapperConfig()
         {
+
+            //Таблиця Клієнти
             CreateMap<DovidnykClientiv, ClientDto>().ReverseMap();
             CreateMap<DovidnykClientiv, UpdateClientDto>().ReverseMap();
+
+            //Таблиця Довідник доставки
+            CreateMap<DovidnykDostavki, DeliveryTypeDto>().ReverseMap();
+            CreateMap<DovidnykDostavki, UpdateDeliveryTypeDto>().ReverseMap();
+
         }
     }
 }

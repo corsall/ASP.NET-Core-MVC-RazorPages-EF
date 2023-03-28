@@ -16,6 +16,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(MapperConfig));
 
 builder.Services.AddScoped<IClientsRepository, ClientsRepository>();
+builder.Services.AddScoped<IDeliveryTypeRepository, DeliveryTypeRepository>();
 
 var app = builder.Build();
 

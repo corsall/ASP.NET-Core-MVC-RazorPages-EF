@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace lab.Controllers;
 
 [ApiController]
-[Route("api/controller")]
+[Route("api/[controller]")]
 
 public class ClientsController : ControllerBase
 {
