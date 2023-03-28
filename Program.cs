@@ -2,6 +2,7 @@ using lab.Contracts;
 using lab.Data;
 using lab.MapperConfigs;
 using lab.Middleware;
+using lab.Properties.JsonConverter;
 using lab.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,11 +16,11 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddAutoMapper(typeof(MapperConfig));
 
-builder.Services.AddScoped<IClientsRepository, ClientsRepository>();
-builder.Services.AddScoped<IDeliveryTypeRepository, DeliveryTypeRepository>();
-builder.Services.AddScoped<IProductsRepository, ProductsRepository>();
-//builder.Services.AddScoped<IOrdersRepository, OrdersRepository>();
-//builder.Services.AddScoped<IOrdersRepository, OrdersRepository>();
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
+builder.Services.AddControllers().AddJsonOptions(options => {
+    options.JsonSerializerOptions.Converters.Add(new DateOnlyJsonConverter());
+});
 
 var app = builder.Build();
 

@@ -30,8 +30,12 @@ namespace lab.MapperConfigs
             CreateMap<DovidnykProdukcii, UpdateProductDto>().ReverseMap();
 
             //Таблця Вміст замовлення
-            CreateMap<VmistZamovleny, OrderDto>().ReverseMap();
-            CreateMap<VmistZamovleny, UpdateOrderDto>().ReverseMap();
+            CreateMap<VmistZamovleny, OrderContentDto>().ReverseMap();
+            CreateMap<VmistZamovleny, UpdateOrderContentDto>().ReverseMap();
+
+            //Таблиця Замовлення
+            CreateMap<ZamovlenyaProductcii, OrderDto>().ReverseMap();
+            CreateMap<ZamovlenyaProductcii, UpdateOrderDto>().ReverseMap();
         }
     }
 }
