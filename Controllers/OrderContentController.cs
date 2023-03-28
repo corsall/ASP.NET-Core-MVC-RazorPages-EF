@@ -14,20 +14,20 @@ namespace lab.Controllers
     [ApiController]
     [Route("api/[controller]")]
 
-    public class OrdersController : ControllerBase
+    public class OrderContentController : ControllerBase
     {
-        private readonly IOrdersRepository _ordersRepo;
+        private readonly IOrderContentsRepository _orderContentsRepo;
         private readonly IMapper _mapper;
-        public OrdersController(IOrdersRepository ordersRepo, IMapper mapper)
+        public OrderContentController(IOrderContentsRepository orderContentsRepo, IMapper mapper)
         {
             _mapper = mapper;
-            _ordersRepo =  ordersRepo;
+            _orderContentsRepo =  orderContentsRepo;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<OrderDto>>> GetOrders()
+        public async Task<ActionResult<IEnumerable<OrderDto>>> GetOrderContents()
         {
-            var orders = await _ordersRepo.GetAllAsync();
+            var orders = await _orderContentsRepo.GetAllAsync();
             var records = _mapper.Map<List<OrderDto>>(orders);
             return Ok(records);
         }
@@ -35,13 +35,13 @@ namespace lab.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorDetails), StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<OrderDto>> GetOrder(int id)
+        public async Task<ActionResult<OrderDto>> GetOrderContent(int id)
         {
-            var order = await _ordersRepo.GetAsync(id);
+            var order = await _orderContentsRepo.GetAsync(id);
 
             if(order == null)
             {
-                throw new NotFoundException(nameof(GetOrder), id);
+                throw new NotFoundException(nameof(GetOrderContent), id);
             }
 
             var orderDto = _mapper.Map<OrderDto>(order);
@@ -51,44 +51,44 @@ namespace lab.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorDetails), StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<OrderDto>> UpdateOrder(int id, UpdateOrderDto updateOrder)
+        public async Task<ActionResult<OrderDto>> UpdateOrderContent(int id, UpdateOrderDto updateOrder)
         {
-            var order = await _ordersRepo.GetAsync(id);
+            var order = await _orderContentsRepo.GetAsync(id);
             if(order == null)
             {
-                throw new NotFoundException(nameof(UpdateOrder), id);
+                throw new NotFoundException(nameof(UpdateOrderContent), id);
             }
             _mapper.Map(updateOrder, order);
 
-            await _ordersRepo.UpdateAsync(order);
+            await _orderContentsRepo.UpdateAsync(order);
 
             var orderDto = _mapper.Map<OrderDto>(order);
             return Ok(orderDto);
         }
 
         [HttpPost]
-        public async Task<ActionResult<OrderDto>> PostOrder(OrderDto createorder)
+        public async Task<ActionResult<OrderDto>> PostOrderContent(OrderDto createorder)
         {
             var order = _mapper.Map<VmistZamovleny>(createorder);
             
-            await _ordersRepo.AddAsync(order);
+            await _orderContentsRepo.AddAsync(order);
 
             var orderDto = _mapper.Map<OrderDto>(order);
 
-            return CreatedAtAction(nameof(PostOrder), new {Id = order.Id}, orderDto);
+            return CreatedAtAction(nameof(PostOrderContent), new {Id = order.Id}, orderDto);
         }
 
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(ErrorDetails), StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> DeleteOrder(int id)
+        public async Task<IActionResult> DeleteOrderContent(int id)
         {
-            var order = await _ordersRepo.GetAsync(id);
+            var order = await _orderContentsRepo.GetAsync(id);
             if(order == null)
             {
-                throw new NotFoundException(nameof(DeleteOrder), id);
+                throw new NotFoundException(nameof(DeleteOrderContent), id);
             }
 
-            await _ordersRepo.DeleteAsync(id);
+            await _orderContentsRepo.DeleteAsync(id);
 
             return NoContent();
         }

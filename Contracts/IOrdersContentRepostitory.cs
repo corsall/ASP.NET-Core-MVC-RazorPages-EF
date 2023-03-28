@@ -6,7 +6,7 @@ using lab.Data;
 
 namespace lab.Contracts
 {
-    public interface IOrdersRepository : IGenericRepository<VmistZamovleny>
+    public interface IOrderContentsRepository : IGenericRepository<VmistZamovleny>
     {
     }
 }
