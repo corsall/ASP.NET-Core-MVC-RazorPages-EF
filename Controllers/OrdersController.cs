@@ -18,4 +18,11 @@ public class OrdersController : BaseController<ZamovlenyaProductcii, OrderDto, U
     public OrdersController(IGenericRepository<ZamovlenyaProductcii> repo, IMapper mapper) : base(repo, mapper)
     {
     }
+
+    [HttpGet("header")]
+    public ActionResult<List<string>> GetTableHeader()
+    {
+        List<string> header = new List<string>() { "Номер Замовлення", "Код Клієнта", "Дата Замовлення", "Дата Сплати", "Код Доставки" };
+        return Ok(header);
+    }
 }

@@ -20,4 +20,11 @@ public class ClientsController : BaseController<DovidnykClientiv, ClientDto, Upd
     public ClientsController(IGenericRepository<DovidnykClientiv> repo, IMapper mapper) : base(repo, mapper)
     {
     }
+
+    [HttpGet("header")]
+    public ActionResult<List<string>> GetTableHeader()
+    {
+        List<string> header = new List<string>() { "Код Клієнта", "Назва Клієнта"};
+        return Ok(header);
+    }
 }

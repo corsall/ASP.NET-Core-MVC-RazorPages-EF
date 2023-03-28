@@ -20,4 +20,11 @@ public class ProductsController : BaseController<DovidnykProdukcii, ProductDto, 
     public ProductsController(IGenericRepository<DovidnykProdukcii> repo, IMapper mapper) : base(repo, mapper)
     {
     }
+
+    [HttpGet("header")]
+    public ActionResult<List<string>> GetTableHeader()
+    {
+        List<string> header = new List<string>() { "Код Продукції", "Назва Продукції", "Ціна" };
+        return Ok(header);
+    }
 }

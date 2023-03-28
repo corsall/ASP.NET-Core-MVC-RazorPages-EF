@@ -30,6 +30,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseDefaultFiles();
+app.UseStaticFiles();
 
 app.UseMiddleware<ExceptionMiddleware>();
 
@@ -38,5 +40,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.Map("/table/{tableName}", (string tableName) => "Tables Page");
 
 app.Run();

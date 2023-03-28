@@ -1,11 +1,71 @@
 {
   "Version": 1,
-  "Hash": "Wd+IDjjsJCOQb7FJUd0ro1C+cQqOEyuUfwjt1rvbW/k=",
+  "Hash": "zGP9O1SUGR5Ssqnv7uGGmv4aZVuJNyym37E4PPoaJII=",
   "Source": "lab",
   "BasePath": "_content/lab",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
-  "Assets": []
+  "DiscoveryPatterns": [
+    {
+      "Name": "lab\\wwwroot",
+      "Source": "lab",
+      "ContentRoot": "C:\\Users\\Baristop\\Desktop\\BD\\lab\\wwwroot\\",
+      "BasePath": "_content/lab",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "C:\\Users\\Baristop\\Desktop\\BD\\lab\\wwwroot\\index.html",
+      "SourceId": "lab",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Baristop\\Desktop\\BD\\lab\\wwwroot\\",
+      "BasePath": "_content/lab",
+      "RelativePath": "index.html",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\index.html"
+    },
+    {
+      "Identity": "C:\\Users\\Baristop\\Desktop\\BD\\lab\\wwwroot\\main.js",
+      "SourceId": "lab",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Baristop\\Desktop\\BD\\lab\\wwwroot\\",
+      "BasePath": "_content/lab",
+      "RelativePath": "main.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\main.js"
+    },
+    {
+      "Identity": "C:\\Users\\Baristop\\Desktop\\BD\\lab\\wwwroot\\style.css",
+      "SourceId": "lab",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Baristop\\Desktop\\BD\\lab\\wwwroot\\",
+      "BasePath": "_content/lab",
+      "RelativePath": "style.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\style.css"
+    }
+  ]
 }

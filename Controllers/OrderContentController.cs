@@ -19,4 +19,11 @@ public class OrderContentController : BaseController<VmistZamovleny, OrderConten
     public OrderContentController(IGenericRepository<VmistZamovleny> repo, IMapper mapper) : base(repo, mapper)
     {
     }
+
+    [HttpGet("header")]
+    public ActionResult<List<string>> GetTableHeader()
+    {
+        List<string> header = new List<string>() { "Id", "Номер Замовлення", "Код Продукції", "Кількість"};
+        return Ok(header);
+    }
 }

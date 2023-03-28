@@ -20,4 +20,11 @@ public class DeliveryTypeController : BaseController<DovidnykDostavki, DeliveryT
     public DeliveryTypeController(IGenericRepository<DovidnykDostavki> repo, IMapper mapper) : base(repo, mapper)
     {
     }
+
+    [HttpGet("header")]
+    public ActionResult<List<string>> GetTableHeader()
+    {
+        List<string> header = new List<string>() { "Код Доставки", "Тип Доставки"};
+        return Ok(header);
+    }
 }
