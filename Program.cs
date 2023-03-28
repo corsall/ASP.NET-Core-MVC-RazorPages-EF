@@ -17,6 +17,7 @@ builder.Services.AddAutoMapper(typeof(MapperConfig));
 
 builder.Services.AddScoped<IClientsRepository, ClientsRepository>();
 builder.Services.AddScoped<IDeliveryTypeRepository, DeliveryTypeRepository>();
+builder.Services.AddScoped<IProductsRepository, ProductsRepository>();
 
 var app = builder.Build();
 

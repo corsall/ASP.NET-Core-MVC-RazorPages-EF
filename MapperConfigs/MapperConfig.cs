@@ -6,6 +6,7 @@ using AutoMapper;
 using lab.Data;
 using lab.Models.Client;
 using lab.Models.DeliveryType;
+using lab.Models.Product;
 
 namespace lab.MapperConfigs
 {
@@ -22,6 +23,10 @@ namespace lab.MapperConfigs
             CreateMap<DovidnykDostavki, DeliveryTypeDto>().ReverseMap();
             CreateMap<DovidnykDostavki, UpdateDeliveryTypeDto>().ReverseMap();
 
+
+            //Таблиця Довідника продукції
+            CreateMap<DovidnykProdukcii, ProductDto>().ReverseMap();
+            CreateMap<DovidnykProdukcii, UpdateProductDto>().ReverseMap();
         }
     }
 }
