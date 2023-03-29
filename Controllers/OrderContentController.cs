@@ -26,4 +26,11 @@ public class OrderContentController : BaseController<VmistZamovleny, OrderConten
         List<string> header = new List<string>() { "Id", "Номер Замовлення", "Код Продукції", "Кількість"};
         return Ok(header);
     }
+
+    [HttpGet("tablekeys")]
+    public ActionResult<List<string>> GetKeys()
+    {
+        List<string> keys = new List<string>() {"id","nz", "kodpr"};
+        return Ok(keys);
+    }
 }

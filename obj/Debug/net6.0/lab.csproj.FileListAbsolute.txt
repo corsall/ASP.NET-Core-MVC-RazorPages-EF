@@ -42,3 +42,9 @@ C:\Users\Baristop\Desktop\BD\lab\bin\Debug\net6.0\Pomelo.EntityFrameworkCore.MyS
 C:\Users\Baristop\Desktop\BD\lab\bin\Debug\net6.0\AutoMapper.dll
 C:\Users\Baristop\Desktop\BD\lab\bin\Debug\net6.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
 C:\Users\Baristop\Desktop\BD\lab\bin\Debug\net6.0\lab.staticwebassets.runtime.json
+C:\Users\Baristop\Desktop\BD\lab\bin\Debug\net6.0\Microsoft.AspNetCore.OData.dll
+C:\Users\Baristop\Desktop\BD\lab\bin\Debug\net6.0\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\Baristop\Desktop\BD\lab\bin\Debug\net6.0\Microsoft.OData.Core.dll
+C:\Users\Baristop\Desktop\BD\lab\bin\Debug\net6.0\Microsoft.OData.Edm.dll
+C:\Users\Baristop\Desktop\BD\lab\bin\Debug\net6.0\Microsoft.OData.ModelBuilder.dll
+C:\Users\Baristop\Desktop\BD\lab\bin\Debug\net6.0\Microsoft.Spatial.dll

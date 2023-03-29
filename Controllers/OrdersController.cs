@@ -25,4 +25,11 @@ public class OrdersController : BaseController<ZamovlenyaProductcii, OrderDto, U
         List<string> header = new List<string>() { "Номер Замовлення", "Код Клієнта", "Дата Замовлення", "Дата Сплати", "Код Доставки" };
         return Ok(header);
     }
+
+    [HttpGet("tablekeys")]
+    public ActionResult<List<string>> GetKeys()
+    {
+        List<string> keys = new List<string>() { "nz", "kodkl", "koddos"};
+        return Ok(keys);
+    }
 }

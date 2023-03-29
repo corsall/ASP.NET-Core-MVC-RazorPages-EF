@@ -7,6 +7,7 @@ using lab.Contracts;
 using lab.Exceptions;
 using lab.Middleware;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Query;
 
 namespace lab.Controllers
 {
@@ -22,6 +23,7 @@ namespace lab.Controllers
         }
 
         [HttpGet]
+        [EnableQuery]
         public async Task<ActionResult<IEnumerable<TReadDto>>> GetEntities()
         {
             var entities = await _repo.GetAllAsync();
@@ -32,6 +34,7 @@ namespace lab.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorDetails), StatusCodes.Status404NotFound)]
+        [EnableQuery]
         public async Task<ActionResult<TReadDto>> GetEntity(int id)
         {
             var entity = await _repo.GetAsync(id);

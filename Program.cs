@@ -4,12 +4,11 @@ using lab.MapperConfigs;
 using lab.Middleware;
 using lab.Properties.JsonConverter;
 using lab.Repository;
+using Microsoft.AspNetCore.OData;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<restaurantsContext>();
-
-builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -20,6 +19,10 @@ builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepositor
 
 builder.Services.AddControllers().AddJsonOptions(options => {
     options.JsonSerializerOptions.Converters.Add(new DateOnlyJsonConverter());
+});
+
+builder.Services.AddControllers().AddOData(options => {
+    options.Select().Filter().OrderBy();
 });
 
 var app = builder.Build();

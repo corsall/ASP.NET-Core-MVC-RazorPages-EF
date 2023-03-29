@@ -27,4 +27,11 @@ public class DeliveryTypeController : BaseController<DovidnykDostavki, DeliveryT
         List<string> header = new List<string>() { "Код Доставки", "Тип Доставки"};
         return Ok(header);
     }
+
+    [HttpGet("tablekeys")]
+    public ActionResult<List<string>> GetKeys()
+    {
+        List<string> keys = new List<string>() { "koddos"};
+        return Ok(keys);
+    }
 }

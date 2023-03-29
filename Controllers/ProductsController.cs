@@ -27,4 +27,11 @@ public class ProductsController : BaseController<DovidnykProdukcii, ProductDto, 
         List<string> header = new List<string>() { "Код Продукції", "Назва Продукції", "Ціна" };
         return Ok(header);
     }
+
+    [HttpGet("tablekeys")]
+    public ActionResult<List<string>> GetKeys()
+    {
+        List<string> keys = new List<string>() { "kodpr"};
+        return Ok(keys);
+    }
 }

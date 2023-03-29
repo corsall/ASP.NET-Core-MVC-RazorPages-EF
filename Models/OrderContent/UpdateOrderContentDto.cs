@@ -9,6 +9,9 @@ namespace lab.Models.Order
     public class UpdateOrderContentDto
     {
         [Required]
+        [Range(0, int.MaxValue)]
+        public int Id { get; set; }
+        [Required]
         public int Nz { get; set; }
         [Required]
         public int Kodpr { get; set; }

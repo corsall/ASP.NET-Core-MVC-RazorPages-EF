@@ -27,4 +27,11 @@ public class ClientsController : BaseController<DovidnykClientiv, ClientDto, Upd
         List<string> header = new List<string>() { "Код Клієнта", "Назва Клієнта"};
         return Ok(header);
     }
+
+    [HttpGet("tablekeys")]
+    public ActionResult<List<string>> GetKeys()
+    {
+        List<string> keys = new List<string>() {"kodkl"};
+        return Ok(keys);
+    }
 }
