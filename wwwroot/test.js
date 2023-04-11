@@ -21,15 +21,14 @@ tableSelector.addEventListener('change', async (event) => {
         table.removeChild(table.firstChild);
     }
     
-
-    await getTable();
-    await getTableForm();
+    await drawTableForm();
+    await drawTable();
 });
 
 
 
 
-async function getTable() {
+async function drawTable() {
     const response = await fetch(url, {
         method: "GET",
         headers: {"Accept": "application/json"}
@@ -38,15 +37,19 @@ async function getTable() {
     if(response.ok === true){
         const tableContext = await response.json();
         let table = document.querySelector('table');
-        let rows = document.createElement('tbody');
+        let headRows = document.createElement('thead');
+        let bodyRows = document.createElement('tbody');
+
+        headRows.append(await getTableTop());
 
         tableContext.forEach(c => {
-            rows.append(row(c));
+            bodyRows.append(row(c));
         });
-        table.append(rows);
+        table.append(headRows);
+        table.append(bodyRows);
     }
 }
-//TODO:
+
 async function getRow(id) {
     const response = await fetch(url + "/" + id, {
         method: "GET",
@@ -56,14 +59,32 @@ async function getRow(id) {
         const row = await response.json();
         const form = document.querySelectorAll('input');
 
+        const keys = await getKeys();
+
         for (let i = 0; i < form.length; i++) {
-            const aga = form[i];
+            // if(keys.includes(form[i].key)) {
+
+            // }
             if(form[i]["name"] === "id-input") {
                 form[i].value = Object.values(row)[0];
                 continue;
             }
             form[i].value = row[form[i]["name"]];
         }
+    }
+}
+
+
+async function getKeys()
+{
+    const response = await fetch(url+'/tablekeys', {
+        method: "GET",
+        headers: {"Accept": "application/json"}
+    });
+
+    if(response.ok === true){
+        const result = await response.json();
+        return result;
     }
 }
 
@@ -78,13 +99,26 @@ async function createTableRow(props) {
     });
     if(response.ok === true){
         const tableRow = await response.json();
-        resetForm(); //TODO:
+        resetForm();
         document.querySelector('tbody').append(row(tableRow));
     }
 }
 
+async function editTableRow(id, props){
+    const response = await fetch(url + "/" + id, {
+        method: "PUT",
+        headers: { "Accept": "application/json", "Content-Type": "application/json" },
+        body: JSON.stringify(props)
+    });
+    if (response.ok === true) {
+        const tableRow = await response.json();
+        resetForm();
+        document.querySelector(`tr[data-rowid='${id}']`).replaceWith(row(tableRow));
+    }
+}
 
-async function getTableForm(){
+
+async function drawTableForm(){
     const response = await fetch(url + '/header', {
         method: "GET",
         headers: {"Accept": "application/json"}
@@ -123,6 +157,29 @@ async function getTableForm(){
 
         form.append(buttonSave);
         form.append(buttonReset);
+    }
+}
+
+async function getTableTop(){
+    const response = await fetch(url + '/header', {
+        method: "GET",
+        headers: {"Accept": "application/json"}
+    });
+
+    if(response.ok === true){
+        const headers = await response.json();
+
+        let headerRow = document.createElement('tr');
+
+        Object.keys(headers).forEach(header => {
+
+            const cell = document.createElement('th');
+            cell.textContent = header;
+            headerRow.appendChild(cell);
+        });
+
+        
+        return headerRow;
     }
 }
 
@@ -179,6 +236,7 @@ function resetForm(){
 
 document.getElementById('tableForm').addEventListener("submit", e => {
     e.preventDefault();
+    //TODO:
     const userInputElements = document.querySelectorAll('input[id="userInput"]');
     const userInputs = {};
 
@@ -191,7 +249,65 @@ document.getElementById('tableForm').addEventListener("submit", e => {
 
     const id = document.getElementById('tableForm').elements["id-input"].value;;
 
-    if (id == 0) createTableRow(userInputs);
-    // else
-        //editUser(id, name, age);  //TODO:
+    if (id == 0) 
+        createTableRow(userInputs);
+    else
+        editTableRow(id, userInputs);
 });
+
+async function getStringTable() {
+    const response = await fetch(url, {
+        method: "GET",
+        headers: {"Accept": "application/json"}
+    });
+
+    if(response.ok === true){
+        const tableContext = await response.json();
+        const stringVersion = {};
+
+        Object.values(tableContext).forEach(row=>{
+            stringVersion[Object.values(row)[0]] = (Object.values(row).join(' ').toUpperCase());
+        });
+        return stringVersion;
+    }
+}
+
+//Пошукова система Google
+async function searchTables(){
+    const input = document.getElementById("searchInput");
+    regexStrings = input.value.toUpperCase().trim().split(' ');
+    //'(?=.*'+item+')'
+    const r = regexStrings.map(x => '(?=.*' + x + ')' ).join('') ;
+
+    const searchRegex = new RegExp('^'+ r + '.{0,}' + '$');
+
+    console.log(searchRegex);
+
+    const searchTable = await getStringTable();
+
+    const rowsToDisplay = [];
+
+    Object.keys(searchTable).forEach(value => {
+        if (searchRegex.test(searchTable[value])){
+            rowsToDisplay.push(value);
+        }
+    });
+
+    rowsToDisplay.forEach(async rowId => {
+        bodyRows = document.querySelector('tbody');
+        while (bodyRows.firstChild) {
+            bodyRows.removeChild(bodyRows.firstChild);
+        }
+
+
+        const response = await fetch(url + "/"+ rowId, {
+            method: "GET",
+            headers: {"Accept": "application/json"}
+        });
+        if(response.ok === true){
+            const tableRowContext = await response.json();
+            let bodyRows = document.querySelector('tbody');
+            bodyRows.append(row(tableRowContext));
+        }
+    });
+}

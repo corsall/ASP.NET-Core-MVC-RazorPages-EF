@@ -22,7 +22,7 @@ builder.Services.AddControllers().AddJsonOptions(options => {
 });
 
 builder.Services.AddControllers().AddOData(options => {
-    options.Select().Filter().OrderBy();
+    options.EnableQueryFeatures();
 });
 
 var app = builder.Build();

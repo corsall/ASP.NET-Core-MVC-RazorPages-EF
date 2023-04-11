@@ -168,7 +168,7 @@ async function editTable(url, id){
         if(keys.includes(value))
         {
             const selector = document.createElement('select');
-            
+            //TODO:
             const options = await getOptions(url, value);
             options.forEach(option =>{
                 const optionElement = document.createElement('option');
@@ -193,6 +193,12 @@ async function editTable(url, id){
     table.appendChild(row);
 
     container.innerHTML = table.outerHTML;
+}
+
+async function getOptions(url,key)
+{
+    const response = await fetch(url+'?$select='+key);
+    return await response.json();
 }
 
 function initPostButton(id){
