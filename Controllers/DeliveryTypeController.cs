@@ -22,9 +22,13 @@ public class DeliveryTypeController : BaseController<DovidnykDostavki, DeliveryT
     }
 
     [HttpGet("header")]
-    public ActionResult<List<string>> GetTableHeader()
+    public ActionResult< Dictionary<string, string>> GetTableHeader()
     {
-        List<string> header = new List<string>() { "Код Доставки", "Тип Доставки"};
+        Dictionary<string, string> header = new Dictionary<string, string>()
+        {
+            { "Код Доставки", "koddos" },
+            { "Тип Доставки", "tupdos" }
+        };
         return Ok(header);
     }
 

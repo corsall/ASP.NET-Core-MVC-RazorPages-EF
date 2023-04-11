@@ -22,9 +22,13 @@ public class ClientsController : BaseController<DovidnykClientiv, ClientDto, Upd
     }
 
     [HttpGet("header")]
-    public ActionResult<List<string>> GetTableHeader()
+    public ActionResult< Dictionary<string, string>> GetTableHeader()
     {
-        List<string> header = new List<string>() { "Код Клієнта", "Назва Клієнта"};
+        Dictionary<string, string> header = new Dictionary<string, string>()
+        {
+            { "Код Клієнта", "kodkl" },
+            { "Назва Клієнта", "namekl" }
+        };
         return Ok(header);
     }
 

@@ -20,11 +20,19 @@ public class OrdersController : BaseController<ZamovlenyaProductcii, OrderDto, U
     }
 
     [HttpGet("header")]
-    public ActionResult<List<string>> GetTableHeader()
+    public ActionResult< Dictionary<string, string>> GetTableHeader()
     {
-        List<string> header = new List<string>() { "Номер Замовлення", "Код Клієнта", "Дата Замовлення", "Дата Сплати", "Код Доставки" };
+        Dictionary<string, string> header = new Dictionary<string, string>()
+        {
+            { "Номер Замовлення", "nz" },
+            { "Код Клієнта", "kodkl" },
+            { "Дата Замовлення", "datez"},
+            { "Дата Сплати", "datesp" },
+            { "Код Доставки", "koddos"}
+        };
         return Ok(header);
     }
+
 
     [HttpGet("tablekeys")]
     public ActionResult<List<string>> GetKeys()

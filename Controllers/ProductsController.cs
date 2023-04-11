@@ -22,9 +22,14 @@ public class ProductsController : BaseController<DovidnykProdukcii, ProductDto, 
     }
 
     [HttpGet("header")]
-    public ActionResult<List<string>> GetTableHeader()
+    public ActionResult< Dictionary<string, string>> GetTableHeader()
     {
-        List<string> header = new List<string>() { "Код Продукції", "Назва Продукції", "Ціна" };
+        Dictionary<string, string> header = new Dictionary<string, string>()
+        {
+            { "Код Продукції", "kodpr" },
+            { "Назва Продукції", "namepr"},
+            { "Ціна", "cina"}
+        };
         return Ok(header);
     }
 

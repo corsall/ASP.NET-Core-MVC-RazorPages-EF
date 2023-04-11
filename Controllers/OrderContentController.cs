@@ -21,9 +21,15 @@ public class OrderContentController : BaseController<VmistZamovleny, OrderConten
     }
 
     [HttpGet("header")]
-    public ActionResult<List<string>> GetTableHeader()
+    public ActionResult< Dictionary<string, string>> GetTableHeader()
     {
-        List<string> header = new List<string>() { "Id", "Номер Замовлення", "Код Продукції", "Кількість"};
+        Dictionary<string, string> header = new Dictionary<string, string>()
+        {
+            { "Id", "id" },
+            { "Номер Замовлення", "nz" },
+            { "Код Продукції", "kodpr"},
+            { "Кількість", "kil" },
+        };
         return Ok(header);
     }
 
