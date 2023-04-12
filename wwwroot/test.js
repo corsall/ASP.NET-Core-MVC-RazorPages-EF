@@ -49,7 +49,7 @@ async function drawTable() {
         table.append(bodyRows);
     }
 }
-
+//TODO:
 async function getRow(id) {
     const response = await fetch(url + "/" + id, {
         method: "GET",
@@ -57,14 +57,35 @@ async function getRow(id) {
     });
     if (response.ok === true) {
         const row = await response.json();
-        const form = document.querySelectorAll('input');
+        const form = document.querySelectorAll('input[id="userInput"]');
 
         const keys = await getKeys();
-
         for (let i = 0; i < form.length; i++) {
-            // if(keys.includes(form[i].key)) {
 
-            // }
+            if(i == 1) { //TODO: i know this looks like shit, but i`m using js
+                form[i].value = Object.values(row)[0];
+                form[i].readOnly = true;
+                continue;
+            }
+
+            const test = form[i]["name"];
+            if(keys.includes(form[i]["name"])) {
+                const selector = document.createElement('select');
+                selector.setAttribute("id","userInput");
+
+                const options = await getOptions(form[i]["name"]);
+                options.forEach(option =>{
+                    const optionElement = document.createElement('option');
+                    optionElement.text = Object.values(option)[0];
+                    optionElement.value = Object.keys(option)[0];
+
+                    selector.appendChild(optionElement);
+    
+                    form[i].replaceWith(selector);
+                });
+            }
+
+
             if(form[i]["name"] === "id-input") {
                 form[i].value = Object.values(row)[0];
                 continue;
@@ -74,6 +95,29 @@ async function getRow(id) {
     }
 }
 
+async function getOptions(key)
+{
+    const response = await fetch(url+'?$select='+key, {
+        method: "GET",
+        headers: {"Accept": "application/json"}
+    });
+
+    if(response.ok === true){
+        const result = await response.json();
+
+        const unique = [];
+        const seen = new Set();
+
+        for (const obj of result) {
+            const test = obj.value;
+            if (!seen.has(Object.values(obj)[0])){
+                unique.push(obj);
+                seen.add(Object.values(obj)[0]);
+            }
+        }
+        return unique;
+    }
+}
 
 async function getKeys()
 {
@@ -99,8 +143,11 @@ async function createTableRow(props) {
     });
     if(response.ok === true){
         const tableRow = await response.json();
-        resetForm();
+        await resetForm();
         document.querySelector('tbody').append(row(tableRow));
+    }
+    else {
+        alert("Рядок із таким id вже існує");
     }
 }
 
@@ -112,7 +159,7 @@ async function editTableRow(id, props){
     });
     if (response.ok === true) {
         const tableRow = await response.json();
-        resetForm();
+        await resetForm();
         document.querySelector(`tr[data-rowid='${id}']`).replaceWith(row(tableRow));
     }
 }
@@ -129,6 +176,7 @@ async function drawTableForm(){
         let form = document.getElementById('tableForm');
 
         const inputId = document.createElement("input");
+        inputId.setAttribute("id", "userInput");
         inputId.setAttribute("type", "hidden");
         inputId.setAttribute("name", "id-input");
         inputId.setAttribute("value", "0");
@@ -152,11 +200,17 @@ async function drawTableForm(){
         buttonSave.textContent = "Save";
 
         const buttonReset = document.createElement("button");
-        buttonReset.setAttribute("type", "reset");
+        buttonReset.setAttribute("id", "reset");
         buttonReset.textContent = "Clear";
 
         form.append(buttonSave);
         form.append(buttonReset);
+
+        buttonReset.addEventListener("click", e => {
+            console.log('reset clicked');
+            e.preventDefault();
+            resetForm();
+        });
     }
 }
 
@@ -204,16 +258,19 @@ function row(tableRow){
     
     const editLink = document.createElement("button");
     editLink.setAttribute("data-id", Object.values(tableRow)[0]);
+    editLink.setAttribute("class", "tableBtn");
     editLink.append("Edit");
     editLink.addEventListener("click", e => {
         console.log('btn: change clicked');
         e.preventDefault();
+        resetForm();
         getRow(Object.values(tableRow)[0]);
     });
     tr.append(editLink);
 
     const removeLink = document.createElement("button");
     removeLink.setAttribute("data-id", Object.values(tableRow)[0]);
+    removeLink.setAttribute("class", "tableBtn");
     removeLink.append("Delete");
     removeLink.addEventListener("click", e => {
         console.log('btn: delete clicked');
@@ -225,23 +282,36 @@ function row(tableRow){
     return tr;
 }
 
-function resetForm(){
-    let form = document.getElementById('tableForm');
+async function resetForm(){
+    const form = document.getElementById('tableForm');
     const inputs = form.querySelectorAll("input");
 
     inputs.forEach(input => {
         input.value = "";
     });
+    while (form.children.length > 0) {
+        form.children[0].remove();
+    }
+
+    await drawTableForm();
 }
 
 document.getElementById('tableForm').addEventListener("submit", e => {
     e.preventDefault();
-    //TODO:
     const userInputElements = document.querySelectorAll('input[id="userInput"]');
+    const userSelectorElements = document.querySelectorAll('select[id="userInput"]');
     const userInputs = {};
 
+    //const selectedOptions = userSelectorElements.selectedOptions;
+
+
     userInputElements.forEach((element) => {
-        userInputs[element["name"]] = element.value
+        userInputs[element["name"]] = element.value;
+        //userInputValues.push(e);
+    });
+
+    userSelectorElements.forEach((element) => {
+        userInputs[element.value] = element.selectedOptions[0].textContent;
         //userInputValues.push(e);
     });
 
