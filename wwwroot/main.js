@@ -1,259 +1,377 @@
-const container = document.getElementById('table-container');
-// Обирається таблиця
-const tableSelect = document.getElementById('table-select');
+const tableSelector = document.getElementById('table-select');
 
-let url;
+let url; //url for fetch
 
-tableSelect.addEventListener('change', async (event) => {
+tableSelector.addEventListener('change', async (event) => {
 
     const selectedTable = event.target.value;
 
-    url = '/api/' + selectedTable;
+    url = '/api/' + selectedTable; 
+
+
+    //clearing form and talbe, to insert new one
+    let form = document.getElementById('tableForm');
+    while (form.firstChild) {
+        form.removeChild(form.firstChild);
+    }
+
+    let table = document.querySelector('table');
+    while (table.firstChild) {
+        table.removeChild(table.firstChild);
+    }
     
-    // await drawTable(`/api/${selectedTable}`);
-    await drawTable(url);
-
-    initDeleteButtons(selectedTable);
-    initUpdateButtons(selectedTable);
-
-    // await drawTable(`/api/${selectedTable}`).then(html => {
-    //     const container = document.getElementById('table-container');
-    //     container.innerHTML = html;
-    // });
+    await drawTableForm();
+    await drawTable();
 });
 
 
-// Виводиться таблиця в html вигляді
-async function drawTable(url){
-    const response = await fetch(url);
-    let data;
-    if(response.ok === true)
-    {
-        data = await response.json();
-    }
-
-    //forming table
-    const table = document.createElement('table');
-
-    const headerRow = document.createElement('tr');
-
-    columnNames = await getTableHeader(url);
-    columnNames.forEach(columnName => {
-        const headerCell  = document.createElement('th');
-        headerCell.textContent = columnName;
-        headerRow.appendChild(headerCell);
+async function drawTable() {
+    const response = await fetch(url, {
+        method: "GET",
+        headers: {"Accept": "application/json"}
     });
-    const emptyHeaderCell  = document.createElement('th');
-    headerRow.appendChild(emptyHeaderCell);
-    table.appendChild(headerRow);
 
-    data.forEach(item => {
-        const row = document.createElement('tr');
-        Object.values(item).forEach(value => {
-            const cell = document.createElement('td');
-            cell.textContent = value;
-            row.appendChild(cell);
+    if(response.ok === true){
+        const tableContext = await response.json();
+        let table = document.querySelector('table');
+        let headRows = document.createElement('thead');
+        let bodyRows = document.createElement('tbody');
+
+        headRows.append(await getTableTop());
+
+        tableContext.forEach(c => {
+            bodyRows.append(row(c));
         });
+        table.append(headRows);
+        table.append(bodyRows);
+    }
+}
+
+async function getRow(id) {
+    const response = await fetch(url + "/" + id, {
+        method: "GET",
+        headers: { "Accept": "application/json" }
+    });
+    if (response.ok === true) {
+        const row = await response.json();
+        const form = document.querySelectorAll('input[id="userInput"]');
+
+        const keys = await getKeys();
+        for (let i = 0; i < form.length; i++) {
+
+            if(i == 1) {
+                form[i].value = Object.values(row)[0];
+                form[i].readOnly = true;
+                continue;
+            }
+
+            const test = form[i]["name"];
+            if(keys.includes(form[i]["name"])) {
+                const selector = document.createElement('select');
+                selector.setAttribute("id","userInput");
+
+                const options = await getOptions(form[i]["name"]);
+                options.forEach(option =>{
+                    const optionElement = document.createElement('option');
+                    optionElement.text = Object.values(option)[0];
+                    optionElement.value = Object.keys(option)[0];
+
+                    selector.appendChild(optionElement);
+    
+                    form[i].replaceWith(selector);
+                });
+            }
+
+
+            if(form[i]["name"] === "id-input") {
+                form[i].value = Object.values(row)[0];
+                continue;
+            }
+            form[i].value = row[form[i]["name"]];
+        }
+    }
+}
+
+async function getOptions(key)
+{
+    const response = await fetch(url+'?$select='+key, {
+        method: "GET",
+        headers: {"Accept": "application/json"}
+    });
+
+    if(response.ok === true){
+        const result = await response.json();
+
+        const unique = [];
+        const seen = new Set();
+
+        for (const obj of result) {
+            const test = obj.value;
+            if (!seen.has(Object.values(obj)[0])){
+                unique.push(obj);
+                seen.add(Object.values(obj)[0]);
+            }
+        }
+        return unique;
+    }
+}
+
+async function getKeys()
+{
+    const response = await fetch(url+'/tablekeys', {
+        method: "GET",
+        headers: {"Accept": "application/json"}
+    });
+
+    if(response.ok === true){
+        const result = await response.json();
+        return result;
+    }
+}
+
+
+async function createTableRow(props) {
+
+
+    const response = await fetch(url, {
+        method: "POST",
+        headers: { "Accept": "application/json", "Content-Type": "application/json" },
+        body: JSON.stringify(props)
+    });
+    if(response.ok === true){
+        const tableRow = await response.json();
+        await resetForm();
+        document.querySelector('tbody').append(row(tableRow));
+    }
+    else {
+        alert("Рядок із таким id вже існує");
+    }
+}
+
+async function editTableRow(id, props){
+    const response = await fetch(url + "/" + id, {
+        method: "PUT",
+        headers: { "Accept": "application/json", "Content-Type": "application/json" },
+        body: JSON.stringify(props)
+    });
+    if (response.ok === true) {
+        const tableRow = await response.json();
+        await resetForm();
+        document.querySelector(`tr[data-rowid='${id}']`).replaceWith(row(tableRow));
+    }
+}
+
+
+async function drawTableForm(){
+    const response = await fetch(url + '/header', {
+        method: "GET",
+        headers: {"Accept": "application/json"}
+    });
+
+    if(response.ok === true){
+        const headers = await response.json();
+        let form = document.getElementById('tableForm');
+
+        const inputId = document.createElement("input");
+        inputId.setAttribute("id", "userInput");
+        inputId.setAttribute("type", "hidden");
+        inputId.setAttribute("name", "id-input");
+        inputId.setAttribute("value", "0");
+
+        form.append(inputId);
+
+        Object.keys(headers).forEach(header => {
+            const label = document.createElement("label");
+            label.setAttribute("for", header);
+            label.textContent = header + ": ";
+
+            const input = document.createElement("input");
+            input.setAttribute("id", "userInput");
+            input.setAttribute("name", headers[header]);
+            form.append(label);
+            form.append(input);
+        });
+
+        const buttonSave = document.createElement("button");
+        buttonSave.setAttribute("type", "submit");
+        buttonSave.textContent = "Save";
+
+        const buttonReset = document.createElement("button");
+        buttonReset.setAttribute("id", "reset");
+        buttonReset.textContent = "Clear";
+
+        form.append(buttonSave);
+        form.append(buttonReset);
+
+        buttonReset.addEventListener("click", e => {
+            console.log('reset clicked');
+            e.preventDefault();
+            resetForm();
+        });
+    }
+}
+
+async function getTableTop(){
+    const response = await fetch(url + '/header', {
+        method: "GET",
+        headers: {"Accept": "application/json"}
+    });
+
+    if(response.ok === true){
+        const headers = await response.json();
+
+        let headerRow = document.createElement('tr');
+
+        Object.keys(headers).forEach(header => {
+
+            const cell = document.createElement('th');
+            cell.textContent = header;
+            headerRow.appendChild(cell);
+        });
+
+        
+        return headerRow;
+    }
+}
+
+async function deleteTableRow(id) {
+    const response = await fetch(url + "/" + id, {
+        method: "DELETE",
+        headers: { "Accept": "application/json" }
+    });
+    if (response.ok === true) {
+        document.querySelector(`tr[data-rowid='${id}']`).remove();
+    }
+}
+
+function row(tableRow){
+    const tr = document.createElement("tr");
+    tr.setAttribute("data-rowid", Object.values(tableRow)[0]);
+    for (let key in tableRow){
         const cell = document.createElement('td');
-
-        cell.appendChild(createDeleteButton(Object.values(item)[0]));
-        cell.appendChild(createUpdateButton(Object.values(item)[0]));
-        row.appendChild(cell);
-        table.appendChild(row);
+        cell.textContent = tableRow[key];
+        tr.appendChild(cell);
+    }
+    
+    const editLink = document.createElement("button");
+    editLink.setAttribute("data-id", Object.values(tableRow)[0]);
+    editLink.setAttribute("class", "tableBtn");
+    editLink.append("Edit");
+    editLink.addEventListener("click", e => {
+        console.log('btn: change clicked');
+        e.preventDefault();
+        resetForm();
+        getRow(Object.values(tableRow)[0]);
     });
-    container.innerHTML = table.outerHTML;
+    tr.append(editLink);
+
+    const removeLink = document.createElement("button");
+    removeLink.setAttribute("data-id", Object.values(tableRow)[0]);
+    removeLink.setAttribute("class", "tableBtn");
+    removeLink.append("Delete");
+    removeLink.addEventListener("click", e => {
+        console.log('btn: delete clicked');
+        e.preventDefault();
+        deleteTableRow(Object.values(tableRow)[0]);
+    });
+    tr.append(removeLink);
+
+    return tr;
 }
 
-function createDeleteButton(id){
-    const deleteButton = document.createElement('button');
-    deleteButton.id = "delete";
-    deleteButton.setAttribute('data-id', id);
-    deleteButton.textContent = 'Delete';
-    return deleteButton;
+async function resetForm(){
+    const form = document.getElementById('tableForm');
+    const inputs = form.querySelectorAll("input");
+
+    inputs.forEach(input => {
+        input.value = "";
+    });
+    while (form.children.length > 0) {
+        form.children[0].remove();
+    }
+
+    await drawTableForm();
 }
 
-async function getTableHeader(url)
-{
-    const response = await fetch(url+'/header');
-    return await response.json();
-}
+document.getElementById('tableForm').addEventListener("submit", e => {
+    e.preventDefault();
+    const userInputElements = document.querySelectorAll('input[id="userInput"]');
+    const userSelectorElements = document.querySelectorAll('select[id="userInput"]');
+    const userInputs = {};
 
-function initDeleteButtons(selectedTable){
-    const deleteButtons = document.querySelectorAll('#delete');
+    userInputElements.forEach((element) => {
+        userInputs[element["name"]] = element.value;
+    });
 
-    deleteButtons.forEach((button) => {
-        button.addEventListener('click', async () => {
-            const id = button.dataset.id;
+    userSelectorElements.forEach((element) => {
+        userInputs[element.value] = element.selectedOptions[0].textContent;
+    });
 
-            console.log(`Delete button clicked for item ${id}`);
-            await deleteRow(id);
+    console.log(userInputs);
+
+    const id = document.getElementById('tableForm').elements["id-input"].value;;
+
+    if (id == 0) 
+        createTableRow(userInputs);
+    else
+        editTableRow(id, userInputs);
+});
+
+async function getStringTable() {
+    const response = await fetch(url, {
+        method: "GET",
+        headers: {"Accept": "application/json"}
+    });
+
+    if(response.ok === true){
+        const tableContext = await response.json();
+        const stringVersion = {};
+
+        Object.values(tableContext).forEach(row=>{
+            stringVersion[Object.values(row)[0]] = (Object.values(row).join(' ').toUpperCase());
         });
-    });
-}
-
-async function deleteRow(id)
-{
-    const response = await fetch(`${url}/${id}`, 
-    {
-        method: 'DELETE',
-    })
-    if(response.ok === true)
-    {
-        await drawTable(url);
+        return stringVersion;
     }
 }
 
-function createUpdateButton(id){
-    const updateButton = document.createElement('button');
-    updateButton.id = "update";
-    updateButton.setAttribute('data-id', id);
-    updateButton.textContent = 'Update';
-    return updateButton;
-}
 
-function initUpdateButtons(selectedTable){
-    const updateButtons = document.querySelectorAll('#update');
+//TODO: Change regex to something that is more readable and understandable
+//Пошукова система Google
+async function searchTables(){
+    const input = document.getElementById("searchInput");
+    regexStrings = input.value.toUpperCase().trim().split(' ');
+    //'(?=.*'+item+')'
+    const r = regexStrings.map(x => '(?=.*' + x + ')' ).join('') ;
 
-    updateButtons.forEach((button) => {
-        button.addEventListener('click', async () => {
-            const id = button.dataset.id;
+    const searchRegex = new RegExp('^'+ r + '.{0,}' + '$');
 
-            console.log(`Update button clicked for item ${id}`);
-            await editTable(url, id);
-            initPostButton(id);
+    console.log(searchRegex);
+
+    const searchTable = await getStringTable();
+
+    const rowsToDisplay = [];
+
+    Object.keys(searchTable).forEach(value => {
+        if (searchRegex.test(searchTable[value])){
+            rowsToDisplay.push(value);
+        }
+    });
+
+    rowsToDisplay.forEach(async rowId => {
+        bodyRows = document.querySelector('tbody');
+        while (bodyRows.firstChild) {
+            bodyRows.removeChild(bodyRows.firstChild);
+        }
+
+
+        const response = await fetch(url + "/"+ rowId, {
+            method: "GET",
+            headers: {"Accept": "application/json"}
         });
+        if(response.ok === true){
+            const tableRowContext = await response.json();
+            let bodyRows = document.querySelector('tbody');
+            bodyRows.append(row(tableRowContext));
+        }
     });
-}
-
-async function updateRow(id)
-{
-    const response = await fetch(`${url}/${id}`, 
-    {
-        method: 'Up',
-    })
-    if(response.ok === true)
-    {
-        await editTable()
-    }
-}
-
-async function editTable(url, id){
-    const response = await fetch(url + `/${id}`);
-    let data;
-    if(response.ok === true)
-    {
-        data = await response.json();
-    }
-
-
-    //forming table
-    const table = document.createElement('table');
-
-    const headerRow = document.createElement('tr');
-
-    columnNames = await getTableHeader(url);
-    columnNames.forEach(columnName => {
-        const headerCell  = document.createElement('th');
-        headerCell.textContent = columnName;
-        headerRow.appendChild(headerCell);
-    });
-    table.appendChild(headerRow);
-
-    //вивід
-    const row = document.createElement('tr');
-    const keys = await getKeys(url);
-    for(const value in data)
-    {
-        const cell = document.createElement('td');
-        if(keys.includes(value))
-        {
-            const selector = document.createElement('select');
-            //TODO:
-            const options = await getOptions(url, value);
-            options.forEach(option =>{
-                const optionElement = document.createElement('option');
-                optionElement.text = Object.values(option)[0];
-                optionElement.value = Object.keys(option)[0];;
-
-                selector.appendChild(optionElement);
-            });
-            
-            cell.appendChild(selector);
-        }
-        else{
-            cell.textContent = data[value];
-        }
-
-        row.appendChild(cell);
-    }
-    const updateCell = document.createElement('td');
-    updateCell.appendChild(createUpdateButton(id));
-    row.appendChild(updateCell);
-
-    table.appendChild(row);
-
-    container.innerHTML = table.outerHTML;
-}
-
-async function getOptions(url,key)
-{
-    const response = await fetch(url+'?$select='+key);
-    return await response.json();
-}
-
-function initPostButton(id){
-    const postButton = document.querySelectorAll('#update');
-
-    postButton.forEach((button) => {
-        button.addEventListener('click', async () => {
-            console.log(`Post button clicked for item ${id}`);
-            await updateRow(id);
-        });
-    });
-}
-
-
-async function getOptions(url,key)
-{
-    const response = await fetch(url+'?$select='+key);
-    return await response.json();
-}
-
-
-async function getKeys(url)
-{
-    const response = await fetch(url+'/tablekeys');
-    return await response.json();
-}
-
-async function updateRow(id)
-{
-    const rowInfo = document.querySelector("table").rows[1].cells;
-
-    var data = {};
-
-    for (let i = 0; i < rowInfo.length; i++) {
-        if(rowInfo[i].children[0] !== undefined)
-        {
-            let option = rowInfo[i].children[0].selectedOptions[0];
-
-            let key = option.value;
-            let value = option.text;
-
-            data[key] = value;
-        }
-        else{
-            data[rowInfo[i]] = rowInfo[i].textContent;
-        }
-    }
-
-
-    const response = await fetch(`${url}/${id}`,{
-        method: 'PUT',
-        body: JSON.stringify(data)
-    })
-    if(response.ok === true)
-    {
-        await drawTable(url);
-    }
 }
