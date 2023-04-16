@@ -2,22 +2,40 @@ import { React, useState } from "react";
 import RestaurantsTable from "./components/table/RestaurantsTable";
 import "./styles/App.css";
 import UsersInput from "./components/UsersInput";
-
+import MyButton from "./components/UI/button/MyButton";
 
 function App() {
-    const [tableData, setTableData] = useState(ORDERS);
-    const [tableHeader, setTableHeader] = useState(ORDERSHEADER);
+    const [tableData, setTableData] = useState(CLIENTS);
+    const [tableHeader, setTableHeader] = useState(CLIENTSHEADER);
+    const headerNumb = Object.keys(tableHeader).length;
+    const [initialUserVals, setInitialUserVals] = useState(
+        new Array(2).fill("1")
+    );
 
     function createRow(newRow) {
         setTableData([...tableData, newRow]);
     }
 
+    function removeRow(row) {
+        setTableData(
+            tableData.filter(
+                (r) => Object.values(r)[0] !== Object.values(row)[0]
+            )
+        );
+    }
+
     return (
         <>
-            <UsersInput create={createRow} tableHeader={tableHeader}/>
+            <UsersInput
+                create={createRow}
+                tableHeader={tableHeader}
+                initialValues={initialUserVals}
+            />
             <RestaurantsTable
+                remove={removeRow}
                 tableContent={tableData}
                 tableHeader={Object.keys(tableHeader)}
+                setInitialUserVals={setInitialUserVals}
             />
         </>
     );

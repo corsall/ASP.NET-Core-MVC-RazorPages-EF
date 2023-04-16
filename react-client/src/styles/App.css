@@ -17,3 +17,9 @@ th, td {
 th {
     background-color: #615e5e;
 }
+
+.buttons{
+    border: 0;
+    width:0;
+    padding: 3px;
+}

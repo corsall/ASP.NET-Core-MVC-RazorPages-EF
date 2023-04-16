@@ -1,11 +1,16 @@
 import React from "react";
 import TableRow from "./TableRow";
 
-function TableBody({tableContent}) {
+function TableBody({ remove, tableContent, setInitialUserVals }) {
     return (
         <tbody>
             {tableContent.map((row) => (
-                <TableRow key={Object.values(row)[0] + Date.now()} row={row}/>
+                <TableRow
+                    remove={remove}
+                    key={Object.values(row)[0] + Date.now()}
+                    row={row}
+                    setInitialUserVals={setInitialUserVals}
+                />
             ))}
         </tbody>
     );
