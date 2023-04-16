@@ -9,7 +9,7 @@ function App() {
     const [tableHeader, setTableHeader] = useState(CLIENTSHEADER);
     const headerNumb = Object.keys(tableHeader).length;
     const [initialUserVals, setInitialUserVals] = useState(
-        new Array(2).fill("1")
+        new Array(2).fill("")
     );
 
     function createRow(newRow) {
