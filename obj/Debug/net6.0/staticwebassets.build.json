@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "l7mpotraiaViUEtGqAaf4jpPq0GenVVlwgS8GohS7TQ=",
+  "Hash": "dVttyXs7Xq37TcyDFG4UavILyE/tahZljPICX2M/+Vw=",
   "Source": "lab",
   "BasePath": "_content/lab",
   "Mode": "Default",
@@ -51,6 +51,23 @@
       "OriginalItemSpec": "wwwroot\\main.js"
     },
     {
+      "Identity": "C:\\Users\\Baristop\\Desktop\\BD\\lab\\wwwroot\\old.js",
+      "SourceId": "lab",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Baristop\\Desktop\\BD\\lab\\wwwroot\\",
+      "BasePath": "_content/lab",
+      "RelativePath": "old.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\old.js"
+    },
+    {
       "Identity": "C:\\Users\\Baristop\\Desktop\\BD\\lab\\wwwroot\\style.css",
       "SourceId": "lab",
       "SourceType": "Discovered",
@@ -66,23 +83,6 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\style.css"
-    },
-    {
-      "Identity": "C:\\Users\\Baristop\\Desktop\\BD\\lab\\wwwroot\\test.js",
-      "SourceId": "lab",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Baristop\\Desktop\\BD\\lab\\wwwroot\\",
-      "BasePath": "_content/lab",
-      "RelativePath": "test.js",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\test.js"
     }
   ]
 }
