@@ -2,15 +2,16 @@ import { React, useState } from "react";
 import RestaurantsTable from "./components/table/RestaurantsTable";
 import "./styles/App.css";
 import UsersInput from "./components/UsersInput";
-import MyButton from "./components/UI/button/MyButton";
+import MySelect from "./components/UI/select/MySelect";
 
 function App() {
-    const [tableData, setTableData] = useState(CLIENTS);
-    const [tableHeader, setTableHeader] = useState(CLIENTSHEADER);
+    const [tableData, setTableData] = useState(ORDERS);
+    const [tableHeader, setTableHeader] = useState(ORDERSHEADER);
     const headerNumb = Object.keys(tableHeader).length;
     const [initialUserVals, setInitialUserVals] = useState(
-        new Array(2).fill("")
+        new Array(headerNumb).fill("")
     );
+    //const [selectedTable, setSelectedTable] = useState(ORDERS);
 
     function createRow(newRow) {
         setTableData([...tableData, newRow]);
@@ -24,16 +25,40 @@ function App() {
         );
     }
 
+    function choseTable(table) {
+        console.log(table);
+        if (table === "CLIENTS") {
+            setTableData(CLIENTS);
+            //setSelectedTable(CLIENTS);
+            setTableHeader(CLIENTSHEADER);
+        }
+        else if (table === "ORDERS") {
+            setTableData(ORDERS);
+            //setSelectedTable(ORDERS);
+            setTableHeader(ORDERSHEADER);
+        }
+    }
+
+
     return (
         <>
+            <div>
+                <MySelect
+                    onChange={choseTable}
+                    defaultValue="Обрати талицю"
+                    options={[{ value: "CLIENTS", name: "Клієнти" }, { value: "ORDERS", name: "Замовлення" }]}
+
+                />
+            </div>
+            <hr style={{ margin: '15px 0' }} />
             <UsersInput
                 create={createRow}
-                tableHeader={tableHeader}
+                tableHeader={tableHeader} //tableHeader
                 initialValues={initialUserVals}
             />
             <RestaurantsTable
                 remove={removeRow}
-                tableContent={tableData}
+                tableContent={tableData} //tableData
                 tableHeader={Object.keys(tableHeader)}
                 setInitialUserVals={setInitialUserVals}
             />

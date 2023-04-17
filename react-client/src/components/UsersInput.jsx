@@ -14,8 +14,9 @@ function UsersInput({ tableHeader, create, initialValues }) {
     const [rowData, setRowData] = useState(tableHeaderObj);
 
     useEffect(() => {
+        console.log(initialValues);
         setRowData(tableHeaderObj);
-    }, [initialValues]);
+    }, [initialValues, tableHeader]);
 
     function clear(){
         const cleanHeaderObj ={};
