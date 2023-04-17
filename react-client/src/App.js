@@ -1,8 +1,9 @@
-import { React, useState } from "react";
+import { React, useState, useMemo } from "react";
 import RestaurantsTable from "./components/table/RestaurantsTable";
 import "./styles/App.css";
 import UsersInput from "./components/UsersInput";
 import MySelect from "./components/UI/select/MySelect";
+import MyInput from "./components/UI/input/MyInput";
 
 function App() {
     const [tableData, setTableData] = useState(CLIENTS);
@@ -11,6 +12,7 @@ function App() {
     const [userInputs, setUserInputs] = useState(
         new Array(headerNumb).fill("")
     );
+    const [searchQuery, setSearchQuery] = useState('');
 
     function createRow(newRow) {
         setTableData([...tableData, newRow]);
@@ -26,6 +28,7 @@ function App() {
 
     function choseTable(table) {
         //clearing inputs
+        setSearchQuery('');
         setUserInputs(new Array(headerNumb).fill(""));
         if (table === "CLIENTS") {
             setTableData(CLIENTS);
@@ -40,6 +43,14 @@ function App() {
         setUserInputs(row);
     }
 
+    const tableSearch = useMemo(() =>{
+        const regex = RegExp(searchQuery);
+        console.log(tableData);
+        const filteredTableData = tableData.filter(table => !Object.values(table).map(value => (value === null)? '':value.toString()).reduce((a,c) => a * (!c.match(regex)), true));
+        if(filteredTableData.length === 0) return tableData;
+        return filteredTableData;
+    },[searchQuery, tableData])
+
     return (
         <>
             <MySelect
@@ -50,6 +61,11 @@ function App() {
                     { value: "ORDERS", name: "Замовлення" },
                 ]}
             />
+            <MyInput
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+                placeholder="Search..."
+            />
             <hr style={{ margin: "15px 0" }} />
             <UsersInput
                 tableHeader={tableHeader}
@@ -58,7 +74,7 @@ function App() {
             />
             <RestaurantsTable
                 remove={removeRow}
-                tableContent={tableData} //tableData
+                tableContent={tableSearch} //tableData
                 tableHeader={Object.keys(tableHeader)}
                 setInitialUserVals={changeUserInput}
             />

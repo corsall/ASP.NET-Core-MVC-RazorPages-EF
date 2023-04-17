@@ -5,6 +5,7 @@ import MyInput from "./UI/input/MyInput";
 function UsersInput({ userInputs, create, tableHeader }) {
     const [rowsInput, setRowsInput] = useState(userInputs);
     useMemo(() => {
+        console.log('memo')
         setRowsInput(userInputs);
     }, [userInputs]);
 
