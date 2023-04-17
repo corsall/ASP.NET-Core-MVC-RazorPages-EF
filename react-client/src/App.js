@@ -15,6 +15,11 @@ function App() {
     const [searchQuery, setSearchQuery] = useState('');
 
     function createRow(newRow) {
+        if(tableData.filter(table => Object.values(table)[0] === Object.values(newRow)[0])){
+            //TODO: Change this to alert window component
+            window.alert("Cannot use the same ID")
+            return;
+        };
         setTableData([...tableData, newRow]);
     }
 
@@ -45,7 +50,6 @@ function App() {
 
     const tableSearch = useMemo(() =>{
         const regex = RegExp(searchQuery);
-        console.log(tableData);
         const filteredTableData = tableData.filter(table => !Object.values(table).map(value => (value === null)? '':value.toString()).reduce((a,c) => a * (!c.match(regex)), true));
         if(filteredTableData.length === 0) return tableData;
         return filteredTableData;

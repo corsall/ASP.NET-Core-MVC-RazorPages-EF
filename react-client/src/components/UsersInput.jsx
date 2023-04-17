@@ -5,7 +5,6 @@ import MyInput from "./UI/input/MyInput";
 function UsersInput({ userInputs, create, tableHeader }) {
     const [rowsInput, setRowsInput] = useState(userInputs);
     useMemo(() => {
-        console.log('memo')
         setRowsInput(userInputs);
     }, [userInputs]);
 
@@ -32,7 +31,6 @@ function UsersInput({ userInputs, create, tableHeader }) {
                         key={key}
                         value={Object.values(rowsInput)[index] || ""}
                         onChange={(e) => {
-                            console.log([...rowsInput]);
                             setRowsInput((row) => {
                                 let copy = [...rowsInput];
                                 copy[index] = e.target.value;
