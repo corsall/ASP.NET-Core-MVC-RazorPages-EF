@@ -7,7 +7,7 @@ function TableBody({ remove, tableContent, setInitialUserVals }) {
             {tableContent.map((row) => (
                 <TableRow
                     remove={remove}
-                    key={Object.values(row)[0] + Date.now()}
+                    key={Object.values(row)[0]}
                     row={row}
                     setInitialUserVals={setInitialUserVals}
                 />

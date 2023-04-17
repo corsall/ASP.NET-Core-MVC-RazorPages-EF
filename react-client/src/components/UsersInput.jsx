@@ -1,44 +1,26 @@
-import { React, useState, useEffect } from "react";
+import { React, useMemo, useState } from "react";
 import MyButton from "./UI/button/MyButton";
 import MyInput from "./UI/input/MyInput";
 
-function UsersInput({ tableHeader, create, initialValues }) {
-    //tableHeaderArr ['kodkl', 'namekl'] => {kodkl: '', namekl: ''}
-    const tableHeaderArr = Object.values(tableHeader);
-    const tableHeaderObj = {};
-
-    for (let i = 0; i < tableHeaderArr.length; i++) {
-        tableHeaderObj[tableHeaderArr[i]] = initialValues[i];
-    }
-
-    const [rowData, setRowData] = useState(tableHeaderObj);
-
-    useEffect(() => {
-        console.log(initialValues);
-        setRowData(tableHeaderObj);
-    }, [initialValues, tableHeader]);
-
-    function clear(){
-        const cleanHeaderObj ={};
-        for (let i = 0; i < tableHeaderArr.length; i++) {
-            cleanHeaderObj[tableHeaderArr[i]] = '';
-        }
-        return cleanHeaderObj;
-    }
+function UsersInput({ userInputs, create, tableHeader }) {
+    const [rowsInput, setRowsInput] = useState(userInputs);
+    useMemo(() => {
+        setRowsInput(userInputs);
+    }, [userInputs]);
 
     function addNewRow(e) {
         e.preventDefault();
-        const newRow = {
-            ...rowData,
-        };
+        const newRow = [...rowsInput];
         create(newRow);
-        
-        setRowData(clear()); //clear inputs
+        //clear inputs
+        setRowsInput(Array(rowsInput.length).fill(''));
     }
 
     function clearForm(e) {
         e.preventDefault();
-        setRowData(clear());
+        //clear inputs
+        setRowsInput(Array(rowsInput.length).fill(''));
+        console.log(rowsInput);
     }
 
     return (
@@ -47,13 +29,15 @@ function UsersInput({ tableHeader, create, initialValues }) {
                 return (
                     <MyInput
                         key={key}
-                        value={Object.values(rowData)[index]}
-                        onChange={(e) =>
-                            setRowData({
-                                ...rowData,
-                                [tableHeader[key]]: e.target.value,
-                            })
-                        }
+                        value={Object.values(rowsInput)[index] || ""}
+                        onChange={(e) => {
+                            console.log([...rowsInput]);
+                            setRowsInput((row) => {
+                                let copy = [...rowsInput];
+                                copy[index] = e.target.value;
+                                return copy;
+                            });
+                        }}
                         type="text"
                         placeholder={key}
                     />

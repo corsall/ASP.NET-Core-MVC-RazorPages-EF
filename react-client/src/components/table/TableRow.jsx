@@ -3,12 +3,11 @@ import MyButton from "../UI/button/MyButton";
 
 function TableRow({ row, remove, setInitialUserVals }) {
     return (
-        //key={Object.values(row)[0]}> always get the value of the first item of an object
         <tr>
             {Object.entries(row).map(([k, value], index) => {
                 return (
                     <td
-                        key={Number.parseInt(Object.values(row)[0]) + index}
+                        key={Object.values(row)[0] + index}
                         id={k}
                     >
                         {value}

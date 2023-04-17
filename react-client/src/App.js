@@ -5,13 +5,12 @@ import UsersInput from "./components/UsersInput";
 import MySelect from "./components/UI/select/MySelect";
 
 function App() {
-    const [tableData, setTableData] = useState(ORDERS);
-    const [tableHeader, setTableHeader] = useState(ORDERSHEADER);
+    const [tableData, setTableData] = useState(CLIENTS);
+    const [tableHeader, setTableHeader] = useState(CLIENTSHEADER);
     const headerNumb = Object.keys(tableHeader).length;
-    const [initialUserVals, setInitialUserVals] = useState(
+    const [userInputs, setUserInputs] = useState(
         new Array(headerNumb).fill("")
     );
-    //const [selectedTable, setSelectedTable] = useState(ORDERS);
 
     function createRow(newRow) {
         setTableData([...tableData, newRow]);
@@ -26,41 +25,42 @@ function App() {
     }
 
     function choseTable(table) {
-        console.log(table);
+        //clearing inputs
+        setUserInputs(new Array(headerNumb).fill(""));
         if (table === "CLIENTS") {
             setTableData(CLIENTS);
-            //setSelectedTable(CLIENTS);
             setTableHeader(CLIENTSHEADER);
-        }
-        else if (table === "ORDERS") {
+        } else if (table === "ORDERS") {
             setTableData(ORDERS);
-            //setSelectedTable(ORDERS);
             setTableHeader(ORDERSHEADER);
         }
     }
 
+    function changeUserInput(row){
+        setUserInputs(row);
+    }
 
     return (
         <>
-            <div>
-                <MySelect
-                    onChange={choseTable}
-                    defaultValue="Обрати талицю"
-                    options={[{ value: "CLIENTS", name: "Клієнти" }, { value: "ORDERS", name: "Замовлення" }]}
-
-                />
-            </div>
-            <hr style={{ margin: '15px 0' }} />
+            <MySelect
+                onChange={choseTable}
+                defaultValue="Обрати таблицю"
+                options={[
+                    { value: "CLIENTS", name: "Клієнти" },
+                    { value: "ORDERS", name: "Замовлення" },
+                ]}
+            />
+            <hr style={{ margin: "15px 0" }} />
             <UsersInput
+                tableHeader={tableHeader}
+                userInputs={userInputs}
                 create={createRow}
-                tableHeader={tableHeader} //tableHeader
-                initialValues={initialUserVals}
             />
             <RestaurantsTable
                 remove={removeRow}
                 tableContent={tableData} //tableData
                 tableHeader={Object.keys(tableHeader)}
-                setInitialUserVals={setInitialUserVals}
+                setInitialUserVals={changeUserInput}
             />
         </>
     );
