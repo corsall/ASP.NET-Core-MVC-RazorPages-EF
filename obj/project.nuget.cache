@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "YQxIbqsQr6GxhVnI19rpRVVvH0hy8q1RoxAZE4xwqex6p9ZWf2CBsLn/eWm8tl8b49xNrku9+Mk/ZIYdmAGOdw==",
+  "dgSpecHash": "SzVaQymjJlV6R7OYQKfKZLrh8Gd3e4o3ZFYi0sXOX1Vq8GIBnrR/JLtBtu/ErhGKfjzj4dTCZgtRWWM1EBUjEA==",
   "success": true,
-  "projectFilePath": "c:\\Users\\Baristop\\Desktop\\BD\\lab\\lab.csproj",
+  "projectFilePath": "C:\\Users\\Baristop\\Desktop\\BD\\lab\\lab.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Baristop\\.nuget\\packages\\automapper\\12.0.0\\automapper.12.0.0.nupkg.sha512",
     "C:\\Users\\Baristop\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.0\\automapper.extensions.microsoft.dependencyinjection.12.0.0.nupkg.sha512",

@@ -2,7 +2,8 @@ import { React, useMemo, useState } from "react";
 import MyButton from "./UI/button/MyButton";
 import MyInput from "./UI/input/MyInput";
 
-function UsersInput({ userInputs, create, tableHeader }) {
+//TODO:
+function UsersInput({ userInputs, create, tableHeader, editMode }) {
     const [rowsInput, setRowsInput] = useState(userInputs);
     useMemo(() => {
         setRowsInput(userInputs);
@@ -10,7 +11,10 @@ function UsersInput({ userInputs, create, tableHeader }) {
 
     function addNewRow(e) {
         e.preventDefault();
-        const newRow = [...rowsInput];
+        const newRow = {};
+        for (let i = 0; i < rowsInput.length; i++) {
+            newRow[Object.values(tableHeader)[i]] = rowsInput[i]; 
+        }
         create(newRow);
         //clear inputs
         setRowsInput(Array(rowsInput.length).fill(''));
@@ -26,6 +30,10 @@ function UsersInput({ userInputs, create, tableHeader }) {
     return (
         <form>
             {Object.keys(tableHeader).map((key, index) => {
+                let isDisabled = false;
+                if(index === 0 && editMode) {
+                    isDisabled = true;
+                }
                 return (
                     <MyInput
                         key={key}
@@ -39,6 +47,7 @@ function UsersInput({ userInputs, create, tableHeader }) {
                         }}
                         type="text"
                         placeholder={key}
+                        disabled={isDisabled}
                     />
                 );
             })}

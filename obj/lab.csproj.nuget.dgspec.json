@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\Baristop\\Desktop\\BD\\lab\\lab.csproj": {}
+    "C:\\Users\\Baristop\\Desktop\\BD\\lab\\lab.csproj": {}
   },
   "projects": {
-    "c:\\Users\\Baristop\\Desktop\\BD\\lab\\lab.csproj": {
+    "C:\\Users\\Baristop\\Desktop\\BD\\lab\\lab.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\Baristop\\Desktop\\BD\\lab\\lab.csproj",
+        "projectUniqueName": "C:\\Users\\Baristop\\Desktop\\BD\\lab\\lab.csproj",
         "projectName": "lab",
-        "projectPath": "c:\\Users\\Baristop\\Desktop\\BD\\lab\\lab.csproj",
+        "projectPath": "C:\\Users\\Baristop\\Desktop\\BD\\lab\\lab.csproj",
         "packagesPath": "C:\\Users\\Baristop\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\Baristop\\Desktop\\BD\\lab\\obj\\",
+        "outputPath": "C:\\Users\\Baristop\\Desktop\\BD\\lab\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Baristop\\AppData\\Roaming\\NuGet\\NuGet.Config",

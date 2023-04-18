@@ -1,51 +1,76 @@
-import { React, useState, useMemo } from "react";
+import { React, useState, useMemo, useEffect } from "react";
 import RestaurantsTable from "./components/table/RestaurantsTable";
 import "./styles/App.css";
 import UsersInput from "./components/UsersInput";
 import MySelect from "./components/UI/select/MySelect";
 import MyInput from "./components/UI/input/MyInput";
+import TableService from "./API/TableService";
 
 function App() {
-    const [tableData, setTableData] = useState(CLIENTS);
-    const [tableHeader, setTableHeader] = useState(CLIENTSHEADER);
+    const [tableData, setTableData] = useState([]);
+    const [tableHeader, setTableHeader] = useState([]);
     const headerNumb = Object.keys(tableHeader).length;
-    const [userInputs, setUserInputs] = useState(
-        new Array(headerNumb).fill("")
-    );
+    const [userInputs, setUserInputs] = useState( new Array(headerNumb).fill("") );
     const [searchQuery, setSearchQuery] = useState('');
+    const [currentTable, setCurrentTable] = useState('');
+    const [editMode, setEditMode] = useState(false);
 
-    function createRow(newRow) {
-        if(tableData.filter(table => Object.values(table)[0] === Object.values(newRow)[0])){
-            //TODO: Change this to alert window component
-            window.alert("Cannot use the same ID")
+    useEffect(() => {
+        setCurrentTable('Clients');
+        fetchTable('Clients');
+    }, []);
+
+    //TODO:
+    async function createRow(newRow) {
+        if(editMode){
+            await TableService.updateTableRow(currentTable, newRow);
+            setTableData([...tableData].map(element => (Object.values(element)[0] === Object.values(newRow)[0])? newRow: element))
+            setEditMode(false);
             return;
-        };
+        }
+        for (let i = 0; i < Object.values(tableData).length; i++) {
+            if(Object.values(Object.values(tableData)[i])[0] === Object.values(newRow)[0]){
+                window.alert("Cannot use the same ID")
+                return;
+            }
+        }
+        const request = await TableService.postTableRow(currentTable, newRow);
+        if(request === undefined){
+            window.alert('Failed to add new row')
+            return;
+        }
         setTableData([...tableData, newRow]);
     }
 
-    function removeRow(row) {
+    async function fetchTable(table) {
+        let response = await TableService.getTable(table);
+        setTableData(response);
+        response = await TableService.getTableHeader(table);
+        setTableHeader(response);
+    }
+
+    async function removeRow(row) {
         setTableData(
             tableData.filter(
                 (r) => Object.values(r)[0] !== Object.values(row)[0]
             )
         );
+        await TableService.deleteTableRow(currentTable, row);
     }
 
+    //routing function
     function choseTable(table) {
         //clearing inputs
         setSearchQuery('');
         setUserInputs(new Array(headerNumb).fill(""));
-        if (table === "CLIENTS") {
-            setTableData(CLIENTS);
-            setTableHeader(CLIENTSHEADER);
-        } else if (table === "ORDERS") {
-            setTableData(ORDERS);
-            setTableHeader(ORDERSHEADER);
-        }
+        setEditMode(false);
+        setCurrentTable(table);
+        fetchTable(table);
     }
 
     function changeUserInput(row){
         setUserInputs(row);
+        setEditMode(true);
     }
 
     const tableSearch = useMemo(() =>{
@@ -61,8 +86,8 @@ function App() {
                 onChange={choseTable}
                 defaultValue="Обрати таблицю"
                 options={[
-                    { value: "CLIENTS", name: "Клієнти" },
-                    { value: "ORDERS", name: "Замовлення" },
+                    { value: "Clients", name: "Клієнти" },
+                    { value: "Orders", name: "Замовлення" },
                 ]}
             />
             <MyInput
@@ -74,6 +99,7 @@ function App() {
             <UsersInput
                 tableHeader={tableHeader}
                 userInputs={userInputs}
+                editMode={editMode}
                 create={createRow}
             />
             <RestaurantsTable
@@ -86,116 +112,5 @@ function App() {
     );
 }
 
-// tableContent={ORDERS}
-// tableHeader={Object.keys(ORDERSHEADER)}
 
 export default App;
-
-const CLIENTS = [
-    {
-        kodkl: 11,
-        namekl: 'Ресторан "Дубки"',
-    },
-    {
-        kodkl: 22,
-        namekl: "Їдальня №2",
-    },
-    {
-        kodkl: 33,
-        namekl: 'Кафе "Світлана"',
-    },
-    {
-        kodkl: 44,
-        namekl: 'Кафе "Вікторія"',
-    },
-    {
-        kodkl: 55,
-        namekl: 'Ресторан "Сатурн"',
-    },
-];
-
-const CLIENTSHEADER = {
-    "Код Клієнта": "kodkl",
-    "Назва Клієнта": "namekl",
-};
-
-const ORDERS = [
-    {
-        nz: 10101,
-        kodkl: 11,
-        datez: "2019-01-01",
-        datesp: "2019-01-01",
-        koddos: 1,
-    },
-    {
-        nz: 20202,
-        kodkl: 22,
-        datez: "2019-01-02",
-        datesp: "2019-10-02",
-        koddos: 2,
-    },
-    {
-        nz: 30303,
-        kodkl: 33,
-        datez: "2019-01-03",
-        datesp: null,
-        koddos: 1,
-    },
-    {
-        nz: 40404,
-        kodkl: 44,
-        datez: "2019-09-05",
-        datesp: "2019-01-05",
-        koddos: 2,
-    },
-    {
-        nz: 50505,
-        kodkl: 55,
-        datez: "2019-01-05",
-        datesp: "2019-01-05",
-        koddos: 1,
-    },
-    {
-        nz: 60606,
-        kodkl: 11,
-        datez: "2019-01-06",
-        datesp: "2019-01-06",
-        koddos: 2,
-    },
-    {
-        nz: 70707,
-        kodkl: 22,
-        datez: "2019-07-07",
-        datesp: "2019-11-07",
-        koddos: 1,
-    },
-    {
-        nz: 80808,
-        kodkl: 33,
-        datez: "2019-08-08",
-        datesp: "2019-01-08",
-        koddos: 1,
-    },
-    {
-        nz: 90909,
-        kodkl: 44,
-        datez: "2019-09-09",
-        datesp: "2019-09-19",
-        koddos: 1,
-    },
-    {
-        nz: 101010,
-        kodkl: 55,
-        datez: "2019-01-10",
-        datesp: "2019-01-10",
-        koddos: 2,
-    },
-];
-
-const ORDERSHEADER = {
-    "Номер Замовлення": "nz",
-    "Код Клієнта": "kodkl",
-    "Дата Замовлення": "datez",
-    "Дата Сплати": "datesp",
-    "Код Доставки": "koddos",
-};
