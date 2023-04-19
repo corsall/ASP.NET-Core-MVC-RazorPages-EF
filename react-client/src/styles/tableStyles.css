@@ -1,0 +1,25 @@
+table {
+    margin: 40px auto;
+    width: fit-content;
+    align-items: end;
+}
+
+tr{
+    padding: 0 20px;
+    background-color: #2e2f3a;
+}
+
+tr:nth-child(2n+1) {
+    /* background-color: #2e2f3a; */
+    background-color: #2b2c34;
+}
+
+td{
+    padding: 10px 50px;
+}
+
+th{
+    text-align: left;
+    padding: 20px 50px;
+    background-color: #2e2f3a;;
+}

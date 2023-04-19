@@ -1,6 +1,27 @@
 .myInput{
     width: 100%;
-    padding: 5px 15px;
-    margin: 5px 0;
-    border: 1px solid black;
+    padding: 10px 15px;
+    margin: 10px 0;
+    font-size: 16px;
+    opacity: 1;
+    
+    border-collapse: collapse;
+    border: none;
+    font-family: Arial, sans-serif;
+    background-color: transparent;
+    cursor: pointer;
+
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
 }
+
+.myInput:hover::placeholder{
+    padding: 10px 10px 10px 0px;
+    background-color: #2a2b32;
+}
+
+.myInput:focus{
+    outline: none;
+    border-radius: 5px;
+}
+
+
