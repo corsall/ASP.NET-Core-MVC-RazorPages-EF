@@ -2,11 +2,10 @@ import { React, useState, useMemo, useEffect } from "react";
 import RestaurantsTable from "./components/table/RestaurantsTable";
 import "./styles/App.css";
 import "./styles/tableStyles.css";
-import "./styles/navBar.css";
-import "./styles/sideBar.css";
 import UsersInput from "./components/UsersInput";
 import TableService from "./API/TableService";
 import SearchSection from "./components/SearchSection";
+import NavBar from "./components/NavBar";
 
 function App() {
     const [tableData, setTableData] = useState([]);
@@ -115,7 +114,7 @@ function App() {
                 />
             </div>
             <div className="main">
-                <div className="navBar"></div>
+                <NavBar/>
                 <RestaurantsTable
                     remove={removeRow}
                     tableContent={tableSearch}

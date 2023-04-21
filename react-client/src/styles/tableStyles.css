@@ -23,3 +23,18 @@ th{
     padding: 20px 50px;
     background-color: #2e2f3a;;
 }
+
+.buttons{
+    padding: 0;
+    width: 0;
+    background-color: #393646;
+}
+
+.buttons button{
+    margin: 0;
+    background-color: #393646;
+}
+
+.buttons button:hover{
+    background-color: #2e2f3a;
+}

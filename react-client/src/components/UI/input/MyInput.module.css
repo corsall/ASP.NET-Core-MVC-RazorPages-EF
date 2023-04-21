@@ -2,7 +2,7 @@
     width: 100%;
     padding: 10px 15px;
     margin: 10px 0;
-    font-size: 16px;
+    font-size: 14px;
     opacity: 1;
     
     border-collapse: collapse;
@@ -14,13 +14,9 @@
     border-bottom: 2px solid rgba(255, 255, 255, 0.2);
 }
 
-.myInput:hover::placeholder{
-    padding: 10px 10px 10px 0px;
-    background-color: #2a2b32;
-}
-
 .myInput:focus{
     outline: none;
+    border: 2px solid rgba(255, 255, 255, 0.2);
     border-radius: 5px;
 }
 
