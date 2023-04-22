@@ -8,6 +8,7 @@ using lab.Data;
 using lab.Exceptions;
 using lab.Middleware;
 using lab.Models.Client;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace lab.Controllers;

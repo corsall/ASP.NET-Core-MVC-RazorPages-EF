@@ -8,6 +8,8 @@ using lab.Models.Client;
 using lab.Models.DeliveryType;
 using lab.Models.Order;
 using lab.Models.Product;
+using lab.Models.Users;
+using Microsoft.AspNetCore.Identity;
 
 namespace lab.MapperConfigs
 {
@@ -36,6 +38,8 @@ namespace lab.MapperConfigs
             //Таблиця Замовлення
             CreateMap<ZamovlenyaProductcii, OrderDto>().ReverseMap();
             CreateMap<ZamovlenyaProductcii, UpdateOrderDto>().ReverseMap();
+
+            CreateMap<ApiUserDto, IdentityUser>().ReverseMap();
         }
     }
 }

@@ -6,6 +6,7 @@ using AutoMapper;
 using lab.Contracts;
 using lab.Exceptions;
 using lab.Middleware;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 
@@ -78,6 +79,7 @@ namespace lab.Controllers
             return Ok(entityDto);
         }
 
+        [Authorize(Roles ="Administrator")]
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(ErrorDetails), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteEntity(int id)

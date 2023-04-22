@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using lab.Data.configurations;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+
 
 namespace lab.Data
 {
-    public partial class restaurantsContext : DbContext
+    public partial class restaurantsContext : IdentityDbContext<IdentityUser>
     {
-        public restaurantsContext()
-        {
-        }
-
         public restaurantsContext(DbContextOptions<restaurantsContext> options)
             : base(options)
         {
@@ -59,6 +56,9 @@ namespace lab.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.ApplyConfiguration(new RoleConfiguration());
+
             modelBuilder.UseCollation("utf8mb4_general_ci")
                 .HasCharSet("utf8mb4");
 
