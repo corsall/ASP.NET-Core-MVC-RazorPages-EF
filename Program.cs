@@ -14,7 +14,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<restaurantsContext>();
 
-builder.Services.AddIdentityCore<IdentityUser>().AddRoles<IdentityRole>().AddEntityFrameworkStores<restaurantsContext>();
+builder.Services.AddIdentityCore<IdentityUser>()
+.AddRoles<IdentityRole>()
+.AddTokenProvider<DataProtectorTokenProvider<IdentityUser>>("restaurantsApi")
+.AddEntityFrameworkStores<restaurantsContext>()
+.AddDefaultTokenProviders();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -23,6 +27,7 @@ builder.Services.AddAutoMapper(typeof(MapperConfig));
 
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IAuthManager, AuthManager>();
+builder.Services.AddScoped<IidsManager, IdsManager>();
 
 builder.Services.AddAuthentication(options => {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

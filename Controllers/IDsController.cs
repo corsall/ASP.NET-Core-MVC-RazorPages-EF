@@ -3,28 +3,28 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using lab.Contracts;
 using lab.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace lab.Controllers;
 
-//TODO: fix
 [ApiController]
 [Route("[controller]")]
 public class IDsController : Controller
 {
-    private readonly restaurantsContext _context;
+    private readonly IidsManager _id;
 
-    public IDsController(restaurantsContext context)
+    public IDsController(IidsManager id)
     {
-        _context = context;
+        _id = id;
     }
 
     [HttpGet("ids")]
     public async Task<Dictionary<string, List<string>>> GetIDs()
     {
-        var ids = await _context.GetAllIdsAsync();
+        var ids = await _id.GetAllIds();
         return ids;
     }
 }

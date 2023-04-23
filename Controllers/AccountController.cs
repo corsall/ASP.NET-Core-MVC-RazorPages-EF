@@ -16,46 +16,66 @@ public class AccountController : ControllerBase
 {
     private readonly IAuthManager _authManager;
 
-    public AccountController(IAuthManager authManager)
-    {
-        _authManager = authManager;
-    }
-    
-    [HttpPost]
-    [Route("register")]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-
-    public async Task<ActionResult> Register([FromBody] ApiUserDto apiUserDto)
-    {
-        var errors = await _authManager.Register(apiUserDto);
-
-        if(errors.Any())
+        public AccountController(IAuthManager authManager)
         {
-            foreach (var error in errors){
-                ModelState.AddModelError(error.Code, error.Description);
+            this._authManager = authManager;
+        }
+
+        // POST: api/Account/register
+        [HttpPost]
+        [Route("register")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult> Register([FromBody] ApiUserDto apiUserDto)
+        {
+            var errors = await _authManager.Register(apiUserDto);
+
+            if (errors.Any())
+            {
+                foreach (var error in errors)
+                {
+                    ModelState.AddModelError(error.Code, error.Description);
+                }
+                return BadRequest(ModelState);
             }
-            return BadRequest(ModelState);
+
+            return Ok();
         }
 
-        return Ok(apiUserDto.UserName);
-    }
-
-    [HttpPost]
-    [Route("login")]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-
-    public async Task<ActionResult> Login([FromBody] LoginDto loginDto)
-    {
-        var authResponse = await _authManager.Login(loginDto);
-
-        if(authResponse == null)
+        // POST: api/Account/login
+        [HttpPost]
+        [Route("login")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult> Login([FromBody] LoginDto loginDto)
         {
-            return Unauthorized();
+            var authResponse = await _authManager.Login(loginDto);
+
+            if(authResponse == null)
+            {
+                return Unauthorized();
+            }
+
+            return Ok(authResponse);
         }
-        return Ok(authResponse);
-    } 
+
+        // POST: api/Account/refreshtoken
+        [HttpPost]
+        [Route("refreshtoken")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult> RefreshToken([FromBody] AuthResponseDto request)
+        {
+            var authResponse = await _authManager.VerifyRefreshToken(request);
+
+            if (authResponse == null)
+            {
+                return Unauthorized();
+            }
+
+            return Ok(authResponse);
+        }
 }

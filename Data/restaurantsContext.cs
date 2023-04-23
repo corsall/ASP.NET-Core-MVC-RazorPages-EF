@@ -18,33 +18,6 @@ namespace lab.Data
         public virtual DbSet<DovidnykProdukcii> DovidnykProdukciis { get; set; } = null!;
         public virtual DbSet<VmistZamovleny> VmistZamovlenies { get; set; } = null!;
         public virtual DbSet<ZamovlenyaProductcii> ZamovlenyaProductciis { get; set; } = null!;
-        
-
-        //TODO: fix this 
-        public async Task<Dictionary<string, List<string>>> GetAllIdsAsync()
-        {
-            var dict = new Dictionary<string, List<string>>();
-
-            var entityTypes = Model.GetEntityTypes();
-
-            foreach (var entityType in entityTypes)
-            {
-                var idPropertyName = entityType.FindPrimaryKey().Properties.Select(x => x.Name).FirstOrDefault();
-
-                var dbSetProperty = GetType().GetProperties()
-                    .FirstOrDefault(p => p.PropertyType.IsGenericType
-                    && p.PropertyType.GetGenericTypeDefinition() == typeof(DbSet<>)
-                    && p.PropertyType.GetGenericArguments().First() == entityType.ClrType);
-                var dbSet = dbSetProperty.GetValue(this) as IEnumerable<object>;
-
-                // Get all IDs for the current entity type
-                var ids = dbSet.Select(x => x.GetType().GetProperty(idPropertyName)?.GetValue(x)?.ToString()).Where(x => x != null).ToList();
-
-                dict.Add(idPropertyName.ToLower(), ids);
-            }
-
-            return await Task.FromResult(dict);
-        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

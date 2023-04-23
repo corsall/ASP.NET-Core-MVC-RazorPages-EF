@@ -49,23 +49,26 @@ public class AuthManager : IAuthManager
         }
 
         var token = await GenerateToken();
+
         return new AuthResponseDto
         {
+            UserName = _user.UserName,
             Token = token,
-            UserId = _user.Id
+            UserId = _user.Id,
+            RefreshToken = await CreateRefreshToken()
         };
     }
 
     public async Task<IEnumerable<IdentityError>> Register(ApiUserDto userDto)
     {
         _user = _mapper.Map<IdentityUser>(userDto);
-        _user.UserName = userDto.Email;
+        _user.UserName = userDto.UserName;
 
         var result = await _userManager.CreateAsync(_user, userDto.Password);
 
         if (result.Succeeded)
         {
-            await _userManager.AddToRoleAsync(_user, "User");
+            await _userManager.AddToRoleAsync(_user, "User");          
         }
 
         return result.Errors;
@@ -90,6 +93,7 @@ public class AuthManager : IAuthManager
             var token = await GenerateToken();
             return new AuthResponseDto
             {
+                UserName = _user.UserName,
                 Token = token,
                 UserId = _user.Id,
                 RefreshToken = await CreateRefreshToken()
