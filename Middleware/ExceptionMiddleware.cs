@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net;
 using System.Text.Json;
@@ -45,6 +46,11 @@ namespace lab.Middleware
                     statusCode = HttpStatusCode.NotFound;
                     errorDetails.ErrorType = "Not Found";
                     break;
+                // case BadHttpRequestException badHttpRequestException:
+                //     statusCode = HttpStatusCode.BadRequest;
+                //     errorDetails.ErrorType = "Validation Error";
+                //     errorDetails.ErrorMessage = validationException.Message;
+                //     break;
                 default:
                     break;
             }

@@ -4,6 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AutoMapper;
 using lab.Contracts;
@@ -61,6 +62,42 @@ public class AuthManager : IAuthManager
 
     public async Task<IEnumerable<IdentityError>> Register(ApiUserDto userDto)
     {
+        //Validateting for some errors that userManager does not validate
+        // var errors = new List<IdentityError>();
+        // if (!Regex.IsMatch(userDto.Email, @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$"))
+        // {
+        //     var error = new IdentityError
+        //     {
+        //         Code = "Email",
+        //         Description = "Invalid Email"
+        //     };
+        //     errors.Add(error);
+        // }
+        // if (!Regex.IsMatch(userDto.PhoneNumber, @"^\+?\d{10,12}$"))
+        // {
+        //     var error = new IdentityError
+        //     {
+        //         Code = "PhoneNumber",
+        //         Description = "Invalid phone number"
+        //     };
+        //     errors.Add(error);
+        // }
+        // var user = await _userManager.FindByEmailAsync(userDto.Email);
+        // if (user != null)
+        // {
+        //     var error = new IdentityError
+        //     {
+        //         Code = "Email",
+        //         Description = "This email is already taken"
+        //     };
+        //     errors.Add(error);
+        // }
+
+        // if (errors.Count > 0)
+        // {
+        //     return errors;
+        // }
+
         _user = _mapper.Map<IdentityUser>(userDto);
         _user.UserName = userDto.UserName;
 
@@ -68,7 +105,7 @@ public class AuthManager : IAuthManager
 
         if (result.Succeeded)
         {
-            await _userManager.AddToRoleAsync(_user, "User");          
+            await _userManager.AddToRoleAsync(_user, "User");
         }
 
         return result.Errors;

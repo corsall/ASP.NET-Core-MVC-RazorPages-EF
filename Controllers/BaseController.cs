@@ -48,7 +48,8 @@ namespace lab.Controllers
             var entityDto = _mapper.Map<TReadDto>(entity);
             return Ok(entityDto );
         }
-
+        
+        [Authorize(Roles ="User,Administrator")]
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorDetails), StatusCodes.Status404NotFound)]

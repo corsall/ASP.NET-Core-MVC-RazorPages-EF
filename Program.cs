@@ -20,6 +20,7 @@ builder.Services.AddIdentityCore<IdentityUser>()
 .AddEntityFrameworkStores<restaurantsContext>()
 .AddDefaultTokenProviders();
 
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
