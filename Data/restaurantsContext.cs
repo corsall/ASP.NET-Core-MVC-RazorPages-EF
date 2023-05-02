@@ -23,7 +23,8 @@ namespace lab.Data
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseMySql("server=sqlrestaurant.mysql.database.azure.com;user=corsall;password=R@blox11;database=restaurants", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.12-mysql"));
+                //optionsBuilder.UseMySql("server=sqlrestaurant.mysql.database.azure.com;user=corsall;password=R@blox11;database=restaurants", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.12-mysql"));
+                optionsBuilder.UseMySql("server=localhost;user=root;password=roblox;database=restaurants", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.12-mysql"));
             }
         }
 
