@@ -49,7 +49,7 @@ namespace lab.Controllers
             return Ok(entityDto );
         }
         
-        //[Authorize(Roles ="User,Administrator")]
+        [Authorize(Roles ="User,Administrator")]
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorDetails), StatusCodes.Status404NotFound)]
@@ -80,7 +80,7 @@ namespace lab.Controllers
             return Ok(entityDto);
         }
 
-        // [Authorize(Roles ="Administrator")]
+        [Authorize(Roles ="Administrator")]
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(ErrorDetails), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteEntity(int id)
