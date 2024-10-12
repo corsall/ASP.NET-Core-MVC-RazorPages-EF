@@ -8,16 +8,17 @@ using lab.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.OData;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<restaurantsContext>();
+builder.Services.AddDbContext<RestaurantsContext>(options => options.UseMySql(builder.Configuration.GetConnectionString("RestaurantDbConnectionString"), new MySqlServerVersion(version: new Version(9, 0, 1))));
 
 builder.Services.AddIdentityCore<IdentityUser>()
 .AddRoles<IdentityRole>()
 .AddTokenProvider<DataProtectorTokenProvider<IdentityUser>>("restaurantsApi")
-.AddEntityFrameworkStores<restaurantsContext>()
+.AddEntityFrameworkStores<RestaurantsContext>()
 .AddDefaultTokenProviders();
 
 
@@ -58,11 +59,8 @@ builder.Services.AddControllers().AddOData(options => {
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseCors(options => {
     options.AllowAnyHeader();

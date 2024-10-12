@@ -9,7 +9,7 @@ using lab.Data;
 
 namespace lab.Migrations
 {
-    [DbContext(typeof(restaurantsContext))]
+    [DbContext(typeof(RestaurantsContext))]
     partial class restaurantsContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace lab.Data
 {
-    public partial class restaurantsContext : IdentityDbContext<IdentityUser>
+    public partial class RestaurantsContext : IdentityDbContext<IdentityUser>
     {
-        public restaurantsContext(DbContextOptions<restaurantsContext> options)
+        public RestaurantsContext(DbContextOptions<RestaurantsContext> options)
             : base(options)
         {
         }
@@ -18,15 +18,6 @@ namespace lab.Data
         public virtual DbSet<DovidnykProdukcii> DovidnykProdukciis { get; set; } = null!;
         public virtual DbSet<VmistZamovleny> VmistZamovlenies { get; set; } = null!;
         public virtual DbSet<ZamovlenyaProductcii> ZamovlenyaProductciis { get; set; } = null!;
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-                //optionsBuilder.UseMySql("server=sqlrestaurant.mysql.database.azure.com;user=corsall;password=R@blox11;database=restaurants", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.12-mysql"));
-                optionsBuilder.UseMySql("server=localhost;user=root;password=roblox;database=restaurants", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.12-mysql"));
-            }
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

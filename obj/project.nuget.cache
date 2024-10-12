@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "DDkn85HPqRKldRG90F9Jc2wkQgppP7ypyq5kBym6pkXzAmVcyrg1/savOn1cPp8rCz/zIquMMRdbaK2CBJCUqg==",
+  "dgSpecHash": "sc2PrSo9movAllzps2iTnPXMCwleCh1+ArJOjOz1vwtBZp+RQTX4vVCVAmfVU+reml9D8QdsRaDTtU85EXr0dQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Baristop\\Desktop\\BD\\lab\\lab.csproj",
+  "projectFilePath": "C:\\Users\\Baristop\\Desktop\\restaurant-manager-api\\lab.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Baristop\\.nuget\\packages\\automapper\\12.0.0\\automapper.12.0.0.nupkg.sha512",
     "C:\\Users\\Baristop\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.0\\automapper.extensions.microsoft.dependencyinjection.12.0.0.nupkg.sha512",

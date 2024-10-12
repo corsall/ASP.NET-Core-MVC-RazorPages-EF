@@ -46,12 +46,9 @@ namespace lab.Middleware
                     statusCode = HttpStatusCode.NotFound;
                     errorDetails.ErrorType = "Not Found";
                     break;
-                // case BadHttpRequestException badHttpRequestException:
-                //     statusCode = HttpStatusCode.BadRequest;
-                //     errorDetails.ErrorType = "Validation Error";
-                //     errorDetails.ErrorMessage = validationException.Message;
-                //     break;
                 default:
+                    statusCode = HttpStatusCode.InternalServerError;
+                    errorDetails.ErrorType = "Internal Server Error. Something went wrong.";
                     break;
             }
 

@@ -2023,11 +2023,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Baristop\\Desktop\\BD\\lab\\lab.csproj",
+      "projectUniqueName": "C:\\Users\\Baristop\\Desktop\\restaurant-manager-api\\lab.csproj",
       "projectName": "lab",
-      "projectPath": "C:\\Users\\Baristop\\Desktop\\BD\\lab\\lab.csproj",
+      "projectPath": "C:\\Users\\Baristop\\Desktop\\restaurant-manager-api\\lab.csproj",
       "packagesPath": "C:\\Users\\Baristop\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Baristop\\Desktop\\BD\\lab\\obj\\",
+      "outputPath": "C:\\Users\\Baristop\\Desktop\\restaurant-manager-api\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Baristop\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -2050,6 +2050,11 @@
         "warnAsError": [
           "NU1605"
         ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
       }
     },
     "frameworks": {
@@ -2106,7 +2111,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.202\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204\\RuntimeIdentifierGraph.json"
       }
     }
   }

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DB</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div>
+        <h2>Select table</h2>
+        <label for="table-select">Select table:</label>
+        <select id="table-select">
+            <option value="">Select a table</option>
+            <option value="Clients">Довідник Клієнтів</option>
+            <option value="DeliveryType">Довідник Доставки</option>
+            <option value="OrderContent">Довідник Продукції</option>
+            <option value="Orders">Вміст Замовлень</option>
+            <option value="Products">Замовлення Продукції</option>
+        </select>
+    </div>
+
+    <input type="text" id="searchInput" placeholder="Search..." onkeyup="searchTables()">
+
+    <form id="tableForm">
+    </form>
+
+    <table ></table>
+    <script src="main.js"></script> 
+</body>
+</html>

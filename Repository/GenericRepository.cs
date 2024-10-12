@@ -11,9 +11,9 @@ namespace lab.Repository
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
-        private readonly restaurantsContext _context;
+        private readonly RestaurantsContext _context;
 
-        public GenericRepository(restaurantsContext context)
+        public GenericRepository(RestaurantsContext context)
         {
             _context = context;
         }

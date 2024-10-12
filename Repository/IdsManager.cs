@@ -13,9 +13,9 @@ namespace lab.Repository;
 
 public class IdsManager : IidsManager
 {
-    private readonly restaurantsContext _context;
+    private readonly RestaurantsContext _context;
 
-    public IdsManager(restaurantsContext context)
+    public IdsManager(RestaurantsContext context)
     {
         _context = context;
     }

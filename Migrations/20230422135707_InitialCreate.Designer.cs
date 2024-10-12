@@ -10,7 +10,7 @@ using lab.Data;
 
 namespace lab.Migrations
 {
-    [DbContext(typeof(restaurantsContext))]
+    [DbContext(typeof(RestaurantsContext))]
     [Migration("20230422135707_InitialCreate")]
     partial class InitialCreate
     {
